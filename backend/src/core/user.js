@@ -1,31 +1,50 @@
 require("dotenv").config();
 
-const { Client } = require("pg");
+const { Pool, Client } = require("pg");
 const { TABLE_NAMES, ERROR_MSG } = require("../constants/constantsVar");
 
-const options = {
-  port: process.env.DB_PORT,
+const credentials = {
   user: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
 };
 
-const client = new Client(options);
+const pool = new Pool(credentials);
+//client.connect();
 
 let getUsers = async () => {
   try {
-    client.connect();
+    const data = await pool.query(`SELECT * FROM ${TABLE_NAMES.usersDatabase}`);
 
-    const data = await client.query(
-      `SELECT * FROM ${TABLE_NAMES.usersDatabase}`
-    );
-
-    client.end();
     return data.rows;
   } catch (err) {
     console.log(`${ERROR_MSG.defaultText}`);
   }
 };
 
+let InsertNewUser = async (req, res) => {
+  try {
+    let {
+      username,
+      password,
+      email,
+      firstName,
+      lastName,
+      homeAddress,
+      phoneNum,
+    } = req.body;
+
+    let userInfo = await pool.query(
+      `INSERT INTO ${TABLE_NAMES.usersDatabase} (username, userPassword, email, firstName, lastName,homeAddress,phoneNum) VALUES ('${username}', '${password}','${email}', '${firstName}', '${lastName}', '${homeAddress}', ${phoneNum});`
+    );
+
+    return userInfo;
+  } catch (err) {
+    res.send("Duplicate Value");
+  }
+};
+
 module.exports = {
   getUsers,
+  InsertNewUser,
 };
