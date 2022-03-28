@@ -64,7 +64,9 @@ let validateUser = async (req, res) => {
       let matchPassword = rows[0].user_password === password;
 
       if (matchPassword) {
-        return SUCCESS_MSG.loginSuccessText;
+        let userID = rows[0].user_id;
+
+        return { msg: SUCCESS_MSG.loginSuccessText, id: userID };
       } else {
         return ERROR_MSG.passwordText;
       }
@@ -76,8 +78,52 @@ let validateUser = async (req, res) => {
   }
 };
 
+// get the single user information
+let getUserProfile = async (req, res) => {
+  try {
+    let id = req.params.userID;
+
+    const data = await pool.query(
+      `SELECT * FROM ${TABLE_NAMES.usersDatabase} WHERE user_id = ${id}`
+    );
+
+    // found that user
+    if (data.rowCount !== 0) {
+      let { rows } = data;
+      return rows[0];
+    } else {
+      return ERROR_MSG.userErrorText;
+    }
+  } catch (err) {
+    res.send(ERROR_MSG.defaultText);
+  }
+};
+
+// receive data from front-end and update the information in the database
+let updateUserProfile = async (req, res) => {
+  try {
+    let { email, firstName, lastName, homeAddress, phoneNum } = req.body;
+
+    let id = req.params.userID;
+
+    let data = await pool.query(
+      `UPDATE ${TABLE_NAMES.usersDatabase} SET email='${email}', first_name='${firstName}', last_name='${lastName}', home_address ='${homeAddress}', phone_num = '${phoneNum}' WHERE user_id = ${id}`
+    );
+
+    if (data.rowCount !== 0) {
+      return SUCCESS_MSG.updateSucText;
+    } else {
+      return ERROR_MSG.updateErrorText;
+    }
+  } catch (err) {
+    res.send(ERROR_MSG.defaultText);
+  }
+};
+
 module.exports = {
   getUsers,
   insertNewUser,
   validateUser,
+  getUserProfile,
+  updateUserProfile,
 };

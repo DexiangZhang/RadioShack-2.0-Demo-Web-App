@@ -12,12 +12,15 @@ const ERROR_MSG = {
     "Product Name or description already existed! Please try again!",
   passwordText: "Password incorrect! Please check your password!",
   accountText: "Username is not match! Please check your username!",
+  userErrorText: "User not found!",
+  updateErrorText: "Updated Fail!",
 };
 
 const SUCCESS_MSG = {
   createText: "Thanks! Your account has been successfully created",
   loginSuccessText: "Success",
   uploadProdSucText: "Uploaded Successful",
+  updateSucText: "Your information has been updated!",
 };
 
 module.exports = {
