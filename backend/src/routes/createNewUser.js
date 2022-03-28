@@ -1,6 +1,6 @@
-const { InsertNewUser } = require("../core/user");
+const { insertNewUser } = require("../core/user");
 
 module.exports = async (req, res) => {
-  const users = await InsertNewUser(req, res);
-  res.status(200).send({ users });
+  const successMsg = await insertNewUser(req, res);
+  res.status(200).send(successMsg);
 };
