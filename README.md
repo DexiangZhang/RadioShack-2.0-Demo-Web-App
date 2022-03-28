@@ -6,13 +6,13 @@
 ### Goal-1: As a user, I want to create a user account when clicking the `New User` button so that I can log into my account securely 
 
 - subtask: create a form group that allows the user to input the user's detail and a `New User` button that allows the user to submit the data to the backend when finish
-- subtask: create a backend API that accepts the data in JSON format from the HTTP body and store new data in the user database
+- [x] subtask: create a backend API that accepts the data in JSON format from the HTTP body and store new data in the user database
 ---
 
 ### Goal-2: As a user, I want to log into my account, so that I can purchase items on the website
 
 - subtask: create a form group that allows users to enter his/her account's username and password with the `Login` button to submit the data to the backend
-- subtasK: write a validation code that compares the user's input and actual data in the database when clicks `Login` button
+- [x] subtasK: write a validation code that compares the user's input and actual data in the database when clicks `Login` button
 - subtask: create a UI that when the result of the comparison fails, pop up a red error message. If successful, switch the page to the actual item page
 ---
 
@@ -25,6 +25,7 @@
 ### Goal-4: As a user, I want to display all the products with their quality and the products that are been sold out, so that I know which item is popular and how many are left for the remaining product
 
 - subtask: create a dynamic webpage and re-render whenever the data in the database is modified and make each item in a card box with product description, quality, price, name, and `Add to Cart` button
+- [x] subtask: create a API that fetch all the product detail from the database
 - subtask: write the code that change the item's `Add to Cart` to `Sold Out` whenever item's quality is reach 0
 ---
 
@@ -66,6 +67,7 @@
 
 - subtask: create a form group that allows users to type all the information of the product 
 - subtask: when the user clicks the `Submit` button, the data will transfer to the backend and the backend will update the data into the existing product table
+- [x] subtask: create API to store new product data into the exisiting product table in database
 ---
 
 ### Goal-11: As a seller, I want to update the status of user's orders so that user can track their product
