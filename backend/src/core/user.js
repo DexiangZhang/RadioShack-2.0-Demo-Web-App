@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 const { Pool, Client } = require("pg");
+const { nanoid } = require("nanoid");
 const {
   TABLE_NAMES,
   ERROR_MSG,
@@ -120,10 +121,73 @@ let updateUserProfile = async (req, res) => {
   }
 };
 
+// receive all order data from front-end, and create order invoice in database
+let createNewOrder = async (req, res) => {
+  try {
+    let id = req.params.userID;
+    let orderNum = nanoid(10);
+
+    let {
+      orderStatus,
+      totalPrice,
+      firstName,
+      lastName,
+      deliAddress,
+      contactNum,
+      ItemLists,
+    } = req.body; // get data from angular project
+
+    await pool.query(
+      `INSERT INTO ${TABLE_NAMES.orderDatabase} 
+      (order_num, order_status, total_price, cust_first_name, cust_last_name, cust_deli_address, cust_contact_num, user_id) 
+      VALUES ('${orderNum}', '${orderStatus}',${totalPrice}, '${firstName}', '${lastName}', '${deliAddress}', '${contactNum}', ${id});`
+    );
+
+    //Itemslist is array of object:    [{....}, {....}]
+    //store each each object to database in Itemslist
+    for (let product of ItemLists) {
+      await pool.query(
+        `INSERT INTO ${TABLE_NAMES.orderProdDatabase} 
+        (total_price_product, product_quality, unit_price, product_title, product_image, order_num, product_id) 
+        VALUES (${product.quality * product.price}, ${product.quality}, ${
+          product.price
+        }, 
+        '${product.name}', '${product.image}', '${orderNum}', '${product.id}');`
+      );
+
+      // update the product databse quality of each order product
+      await pool.query(
+        `UPDATE ${TABLE_NAMES.productDatabase} SET quality = quality - ${product.quality} WHERE product_id = '${product.id}'`
+      );
+    }
+
+    return SUCCESS_MSG.orderSucText;
+  } catch (err) {
+    res.send(ERROR_MSG.defaultText);
+  }
+};
+
+let getUserOrders = async (req, res) => {
+  try {
+    let id = req.params.userID;
+
+    const data = await pool.query(
+      `SELECT * FROM ${TABLE_NAMES.orderDatabase} WHERE user_id = ${id}`
+    );
+
+    // since it might have multiple order from same user, so we return array of objects that match the query
+    return data.rows;
+  } catch (err) {
+    res.send(ERROR_MSG.defaultText);
+  }
+};
+
 module.exports = {
   getUsers,
   insertNewUser,
   validateUser,
   getUserProfile,
   updateUserProfile,
+  createNewOrder,
+  getUserOrders,
 };

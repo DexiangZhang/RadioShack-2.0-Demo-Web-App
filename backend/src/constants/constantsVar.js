@@ -1,6 +1,8 @@
 const TABLE_NAMES = {
   usersDatabase: "user_accounts",
   productDatabase: "products",
+  orderDatabase: "orders",
+  orderProdDatabase: "order_products",
 };
 
 const ERROR_MSG = {
@@ -21,6 +23,7 @@ const SUCCESS_MSG = {
   loginSuccessText: "Success",
   uploadProdSucText: "Uploaded Successful",
   updateSucText: "Your information has been updated!",
+  orderSucText: "Order Completed!",
 };
 
 module.exports = {
