@@ -17,6 +17,8 @@ const createNewUser = require("./src/routes/createNewUser");
 const userLogin = require("./src/routes/userAuthentication");
 const getUserProfile = require("./src/routes/getUserProfile");
 const updateUserProfile = require("./src/routes/updateUserProfile");
+const placeUserOrder = require("./src/routes/placeUserOrder");
+const getUserOrders = require("./src/routes/getUserOrders");
 
 const getAllProducts = require("./src/routes/getAllProducts");
 const createNewProduct = require("./src/routes/createNewProduct");
@@ -24,9 +26,11 @@ const createNewProduct = require("./src/routes/createNewProduct");
 // user api
 app.get(`${userApi}/fetchAllUsers`, getAllUsers);
 app.get(`${userApi}/getUserProfile/:userID`, getUserProfile);
+app.get(`${userApi}/getUserOrders/:userID`, getUserOrders);
 
 app.post(`${userApi}/signUp`, createNewUser);
 app.post(`${userApi}/signIn`, userLogin);
+app.post(`${userApi}/placeOrder/:userID`, placeUserOrder);
 app.patch(`${userApi}/updateUserProfile/:userID`, updateUserProfile);
 
 // product api
