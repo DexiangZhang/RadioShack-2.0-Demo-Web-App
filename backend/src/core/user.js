@@ -2,6 +2,8 @@ require("dotenv").config();
 
 const { Pool, Client } = require("pg");
 const { nanoid } = require("nanoid");
+const bcrypt = require("bcrypt");
+
 const {
   TABLE_NAMES,
   ERROR_MSG,
@@ -40,9 +42,17 @@ let insertNewUser = async (req, res) => {
       phoneNum,
     } = req.body;
 
+    // encypt user password
+    const salt = bcrypt.genSaltSync(parseInt(process.env.SALTS));
+    const hash = bcrypt.hashSync(password, salt);
+
+    //Store hash in your password DB
     await pool.query(
-      `INSERT INTO ${TABLE_NAMES.usersDatabase} (username, user_password, email, first_name, last_name,home_address,phone_num) VALUES ('${username}', '${password}','${email}', '${firstName}', '${lastName}', '${homeAddress}', ${phoneNum});`
+      `INSERT INTO ${TABLE_NAMES.usersDatabase} 
+      (username, user_password, email, first_name, last_name,home_address,phone_num) 
+      VALUES ('${username}', '${hash}','${email}', '${firstName}', '${lastName}', '${homeAddress}', ${phoneNum});`
     );
+
     return SUCCESS_MSG.createText;
   } catch (err) {
     res.send(ERROR_MSG.duplicateText);
@@ -55,14 +65,18 @@ let validateUser = async (req, res) => {
     let { username, password } = req.body;
 
     let data = await pool.query(
-      `SELECT * FROM ${TABLE_NAMES.usersDatabase} WHERE username = '${username}'`
+      `SELECT * FROM ${TABLE_NAMES.usersDatabase} 
+      WHERE username = '${username}'`
     );
 
     // information found
     if (data.rowCount !== 0) {
       let { rows } = data;
 
-      let matchPassword = rows[0].user_password === password;
+      const matchPassword = await bcrypt.compare(
+        password,
+        rows[0].user_password
+      );
 
       if (matchPassword) {
         let userID = rows[0].user_id;
@@ -85,7 +99,8 @@ let getUserProfile = async (req, res) => {
     let id = req.params.userID;
 
     const data = await pool.query(
-      `SELECT * FROM ${TABLE_NAMES.usersDatabase} WHERE user_id = ${id}`
+      `SELECT * FROM ${TABLE_NAMES.usersDatabase} 
+      WHERE user_id = ${id}`
     );
 
     // found that user
@@ -108,7 +123,9 @@ let updateUserProfile = async (req, res) => {
     let id = req.params.userID;
 
     let data = await pool.query(
-      `UPDATE ${TABLE_NAMES.usersDatabase} SET email='${email}', first_name='${firstName}', last_name='${lastName}', home_address ='${homeAddress}', phone_num = '${phoneNum}' WHERE user_id = ${id}`
+      `UPDATE ${TABLE_NAMES.usersDatabase} 
+      SET email='${email}', first_name='${firstName}', last_name='${lastName}', home_address ='${homeAddress}', phone_num = '${phoneNum}' 
+      WHERE user_id = ${id}`
     );
 
     if (data.rowCount !== 0) {
@@ -127,6 +144,10 @@ let createNewOrder = async (req, res) => {
     let id = req.params.userID;
     let orderNum = nanoid(10);
 
+    let date = new Date();
+
+    let dateFormat = date.toISOString().slice(0, 10);
+
     let {
       orderStatus,
       totalPrice,
@@ -139,8 +160,8 @@ let createNewOrder = async (req, res) => {
 
     await pool.query(
       `INSERT INTO ${TABLE_NAMES.orderDatabase} 
-      (order_num, order_status, total_price, cust_first_name, cust_last_name, cust_deli_address, cust_contact_num, user_id) 
-      VALUES ('${orderNum}', '${orderStatus}',${totalPrice}, '${firstName}', '${lastName}', '${deliAddress}', '${contactNum}', ${id});`
+      (order_num, order_status, order_date, total_price, cust_first_name, cust_last_name, cust_deli_address, cust_contact_num, user_id) 
+      VALUES ('${orderNum}', '${orderStatus}', ${dateFormat}, ${totalPrice}, '${firstName}', '${lastName}', '${deliAddress}', '${contactNum}', ${id});`
     );
 
     //Itemslist is array of object:    [{....}, {....}]
@@ -167,12 +188,14 @@ let createNewOrder = async (req, res) => {
   }
 };
 
+// get all the user order history
 let getUserOrders = async (req, res) => {
   try {
     let id = req.params.userID;
 
     const data = await pool.query(
-      `SELECT * FROM ${TABLE_NAMES.orderDatabase} WHERE user_id = ${id}`
+      `SELECT * FROM ${TABLE_NAMES.orderDatabase} 
+      WHERE user_id = ${id}`
     );
 
     // since it might have multiple order from same user, so we return array of objects that match the query
