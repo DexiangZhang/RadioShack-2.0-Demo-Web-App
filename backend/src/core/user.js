@@ -50,7 +50,7 @@ let insertNewUser = async (req, res) => {
     await pool.query(
       `INSERT INTO ${TABLE_NAMES.usersDatabase} 
       (username, user_password, email, first_name, last_name,home_address,phone_num) 
-      VALUES ('${username}', '${hash}','${email}', '${firstName}', '${lastName}', '${homeAddress}', ${phoneNum});`
+      VALUES ('${username}', '${hash}', '${email}', '${firstName}', '${lastName}','${homeAddress}', ${phoneNum});`
     );
 
     return SUCCESS_MSG.createText;
@@ -83,10 +83,10 @@ let validateUser = async (req, res) => {
 
         return { msg: SUCCESS_MSG.loginSuccessText, id: userID };
       } else {
-        return ERROR_MSG.passwordText;
+        return { msg: ERROR_MSG.passwordText };
       }
     } else {
-      return ERROR_MSG.accountText;
+      return { msg: ERROR_MSG.accountText };
     }
   } catch (err) {
     res.send(ERROR_MSG.defaultText);

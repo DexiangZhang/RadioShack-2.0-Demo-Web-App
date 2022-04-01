@@ -1,0 +1,152 @@
+<div class="wrapper">
+  <form [formGroup]="formRef" (ngSubmit)="submit()">
+    <!-- can make the form center and expand background color: class="align-items-center flex justify-content-center lg:px-8 md:px-6 px-4 py-8 surface-ground ng-star-inserted" -->
+    <div class="surface-card p-4 shadow-2 border-round w-full lg:w-6">
+      <div class="text-center mb-5">
+        <img
+          src="../../../assets/images/logos/hyperledger.svg"
+          alt="hyperledger_logo"
+          height="50"
+          class="mb-3"
+        />
+        <div class="text-900 text-3xl font-medium mb-3">
+          Create EletronX User
+        </div>
+        <span class="text-600 font-medium line-height-3"
+          >Already had an account?</span
+        >
+        <a
+          routerLink="/"
+          class="font-medium no-underline ml-2 text-blue-500 cursor-pointer"
+          >Sign In Here!</a
+        >
+      </div>
+
+      <div *ngIf="isRecMsg" class="mx-8">
+        <p-message severity="{{ msgType }}" text="{{ msg }}"></p-message
+        ><br /><br />
+      </div>
+
+      <div>
+        <!-- Username-->
+        <label for="usernameInput" class="block text-900 font-medium mb-2"
+          >Username</label
+        >
+        <input
+          id="usernameInput"
+          type="text"
+          pInputText
+          class="w-full mb-3"
+          formControlName="username"
+        />
+
+        <!-- password -->
+        <label for="passwordInput" class="block text-900 font-medium mb-2"
+          >Password</label
+        >
+        <input
+          id="passwordInput"
+          type="password"
+          pInputText
+          class="w-full mb-3"
+          formControlName="password"
+          pPassword
+        />
+
+        <div class="mb-3">
+          <!-- email -->
+          <label for="emailInput" class="block text-900 font-medium mb-2"
+            >Email</label
+          >
+          <input
+            id="emailInput"
+            type="email"
+            pInputText
+            class="w-full"
+            formControlName="email"
+            aria-describedby="email-help"
+          />
+          <small
+            *ngIf="email?.errors?.['pattern']"
+            id="email-help"
+            class="p-error"
+            >Email is invalid</small
+          >
+        </div>
+
+        <!-- first name -->
+        <label for="fNameInput" class="block text-900 font-medium mb-2"
+          >First Name</label
+        >
+        <input
+          id="fNameInput"
+          type="text"
+          pInputText
+          class="w-full mb-3"
+          formControlName="firstName"
+        />
+
+        <!-- last name -->
+        <label for="lNameInput" class="block text-900 font-medium mb-2"
+          >Last Name</label
+        >
+        <input
+          id="lNameInput"
+          type="text"
+          pInputText
+          class="w-full mb-3"
+          formControlName="lastName"
+        />
+
+        <!-- home address -->
+        <label for="addressInput" class="block text-900 font-medium mb-2"
+          >Address</label
+        >
+        <input
+          id="addressInput"
+          type="text"
+          pInputText
+          class="w-full mb-3"
+          formControlName="homeAddress"
+        />
+
+        <div class="mb-3">
+          <!-- phone number -->
+          <label for="phoneInput" class="block text-900 font-medium mb-2"
+            >Phone Number</label
+          >
+          <input
+            id="phoneInput"
+            type="number"
+            pInputText
+            class="w-full"
+            formControlName="phoneNum"
+            aria-describedby="phone-help"
+          />
+          <small
+            *ngIf="phoneNum?.errors?.['max']"
+            id="phone-help"
+            class="p-error"
+            >Phone number need to be 10 digits</small
+          >
+          <small
+            *ngIf="phoneNum?.errors?.['min']"
+            id="phone-help"
+            class="p-error"
+            >Phone number need to be 10 digits</small
+          >
+        </div>
+
+        <button
+          pButton
+          pRipple
+          label="Sign Up"
+          icon="pi pi-user"
+          class="w-full"
+          type="submit"
+          [disabled]="!formRef.valid"
+        ></button>
+      </div>
+    </div>
+  </form>
+</div>

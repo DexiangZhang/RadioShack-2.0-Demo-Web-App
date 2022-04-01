@@ -9,7 +9,7 @@ const ERROR_MSG = {
   defaultText:
     "Sorry, Something wrong with your program, please check your code!",
   duplicateText:
-    "Username, email or phone Number already existed! Please try again! ",
+    "Username, email or phone number already existed! Please try again! ",
   duplicateProdText:
     "Product Name or description already existed! Please try again!",
   passwordText: "Password incorrect! Please check your password!",
