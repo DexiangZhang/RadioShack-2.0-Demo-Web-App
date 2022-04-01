@@ -1,13 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PrimeNGConfig } from 'primeng/api';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { UserService } from 'src/app/service/user/user.service';
 import { Router } from '@angular/router';
@@ -24,6 +17,7 @@ export class UserLoginComponent implements OnInit {
   });
 
   msg: string = '';
+  isError: boolean = false;
 
   constructor(
     private primengConfig: PrimeNGConfig,
@@ -38,17 +32,20 @@ export class UserLoginComponent implements OnInit {
   submit() {
     let userLogin = this.formRef.value;
 
-    this.userService.validateUserLogin(userLogin).subscribe(
-      (data) => {
+    this.userService.validateUserLogin(userLogin).subscribe({
+      next: (data) => {
         if (data.msg == 'Success') {
-          //this.router.navigate(["userhome", userLogin.username]);
-          console.log(data);
+          localStorage.setItem('user_id', data.id);
+          // pass the url with some value ===> eg. userDashboard/user_1
+          this.router.navigate(['userDashboard', userLogin.username]);
+          this.isError = false;
         } else {
           this.msg = data.msg;
+          this.isError = true;
         }
       },
-      (error) => console.log(error)
-    );
+      error: (error) => console.log(error),
+    });
     this.formRef.reset();
   }
 }
