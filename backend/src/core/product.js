@@ -40,7 +40,9 @@ let createNewProduct = async (req, res) => {
       req.body;
 
     await pool.query(
-      `INSERT INTO ${TABLE_NAMES.productDatabase} (product_id, product_image, product_name, quality, descriptions, unit_price) VALUES ('${product_id}', '${productImage}','${productName}', ${quality}, '${description}', ${unitPrice});`
+      `INSERT INTO ${TABLE_NAMES.productDatabase} 
+      (product_id, product_image, product_name, quality, descriptions, unit_price) 
+      VALUES ('${product_id}', '${productImage}','${productName}', ${quality}, '${description}', ${unitPrice});`
     );
 
     return SUCCESS_MSG.uploadProdSucText;

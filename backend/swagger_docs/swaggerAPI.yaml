@@ -1,0 +1,505 @@
+openapi: 3.0.0
+info:
+  title: EletronX API
+  description: EletronX API Documentation by DexiangZhang
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api
+    description: Local Server
+tags:
+  - name: user
+    description: Everything about user API
+  - name: product
+    description: Operations about product
+
+paths:
+  /user/fetchAllUsers:
+    get:
+      tags:
+        - user
+      description: Get all the user from the system
+      operationId: getAllUsers
+
+      parameters: []
+
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user"
+
+  /user/getUserProfile/{userID}:
+    get:
+      tags:
+        - user
+      description: Get one user profile information by userID
+      operationId: getOneUserProfile
+
+      parameters:
+        - in: path
+          name: userID
+          schema:
+            type: integer
+          required: true
+          description: A single user ID
+
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user"
+
+  /user/getUserOrders/{userID}:
+    get:
+      tags:
+        - user
+      description: Get the user orders history by userID
+      operationId: getUserOrdersHistory
+
+      parameters:
+        - in: path
+          name: userID
+          schema:
+            type: integer
+          required: true
+          description: A single user ID
+
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/order"
+
+  /user/signUp:
+    post:
+      tags:
+        - user
+      description: Create a new user account
+      operationId: createNewUser
+
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/userForm"
+      responses:
+        201:
+          description: Thanks! Your account has been successfully created
+        422:
+          description: Username, email or phone number already existed! Please try again!
+
+  /user/signIn:
+    post:
+      tags:
+        - user
+      description: Login existing user account
+      operationId: validateUser
+
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: user account name
+                  example: user_1
+                password:
+                  type: string
+                  description: user password
+                  example: 1356457qq
+      responses:
+        201:
+          description: Success
+        422:
+          description: Username is not match! Please check your username! OR Password incorrect! Please check your password!
+
+  /user/placeOrder/{userID}:
+    post:
+      tags:
+        - user
+      description: Create a new order for this user
+      operationId: createNewOrder
+
+      parameters:
+        - in: path
+          name: userID
+          schema:
+            type: integer
+          required: true
+          description: A single user ID
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/orderForm"
+      responses:
+        201:
+          description: Order Completed!
+        422:
+          description: Order Failed! Sorry, Something wrong with your order, please check your code!
+
+  /user/updateUserProfile/{userID}:
+    patch:
+      tags:
+        - user
+      description: Update user personal information
+      operationId: updateUserProfile
+
+      parameters:
+        - in: path
+          name: userID
+          schema:
+            type: integer
+          required: true
+          description: A single user ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/userProfile"
+
+      responses:
+        200:
+          description: Your information has been updated!
+        422:
+          description: Updated Fail! Sorry, Something wrong with your program, please check your code!
+
+  /product/fetchAllProducts:
+    get:
+      tags:
+        - product
+      description: Get all the products info from the system
+      operationId: getAllProducts
+
+      parameters: []
+
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/product"
+
+  /product/uploadNewProduct:
+    post:
+      tags:
+        - product
+      description: Upload a new product
+      operationId: craeteNewProduct
+
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/productForm"
+      responses:
+        201:
+          description: Uploaded Successful
+        422:
+          description: Product Name or description already existed! Please try again!
+
+components:
+  schemas:
+    user:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          description: user ID
+          example: 1
+        username:
+          type: string
+          description: user account name
+          example: user_1
+        user_password:
+          type: string
+          description: user account password
+          example: $2b$10$s7xktw8Zunggp2bm/fZ2veMq1UaTux1ue.CAAsSwoyvWAqdVB0jQ6
+        email:
+          type: string
+          description: user email address
+          example: user_1@gmail.com
+        first_name:
+          type: string
+          description: user first name
+          example: kenny
+        last_name:
+          type: string
+          description: user last name
+          example: lee
+        home_address:
+          type: string
+          description: user home address
+          example: 759 43ST Brooklyn NY 11220
+        phone_num:
+          type: string
+          description: user phone number(10 digits)
+          example: 9178678979
+
+    userForm:
+      type: object
+      properties:
+        username:
+          type: string
+          description: user account name
+          example: user_1
+        password:
+          type: string
+          description: user account password
+          example: 123456789qq
+        email:
+          type: string
+          description: user email address
+          example: user_1@gmail.com
+        firstName:
+          type: string
+          description: user first name
+          example: kenny
+        lastName:
+          type: string
+          description: user last name
+          example: lee
+        homeAddress:
+          type: string
+          description: user home address
+          example: 759 43ST Brooklyn NY 11220
+        phoneNum:
+          type: string
+          description: user phone number(10 digits)
+          example: 9178678979
+
+    userProfile:
+      type: object
+      properties:
+        email:
+          type: string
+          description: user email address
+          example: user_1@gmail.com
+        firstName:
+          type: string
+          description: user first name
+          example: kenny
+        lastName:
+          type: string
+          description: user last name
+          example: lee
+        homeAddress:
+          type: string
+          description: user home address
+          example: 759 43ST Brooklyn NY 11220
+        phoneNum:
+          type: string
+          description: user phone number(10 digits)
+          example: 9178678979
+
+    product:
+      type: object
+      properties:
+        productImage:
+          type: string
+          description: product image URL
+          example: https://i.picsum.photos/id/0/5616/3744.jpg?hmac=3GAAioiQziMGEtLbfrdbcoenXoWAW-zlyEAMkfEdBzQ
+        productName:
+          type: string
+          description: product name
+          example: Computer
+        quality:
+          type: integer
+          description: quality of product
+          example: 3
+        description:
+          type: string
+          description: product detail
+          example: this is good product
+        unitPrice:
+          type: integer
+          description: unit price for product
+          example: 200
+
+    productForm:
+      type: object
+      properties:
+        product_id:
+          type: string
+          description: product ID
+          example: ushfkashieh
+        product_image:
+          type: string
+          description: product image URL
+          example: https://i.picsum.photos/id/0/5616/3744.jpg?hmac=3GAAioiQziMGEtLbfrdbcoenXoWAW-zlyEAMkfEdBzQ
+        product_name:
+          type: string
+          description: product name
+          example: Computer
+        quality:
+          type: integer
+          description: quality of product
+          example: 3
+        descriptions:
+          type: string
+          description: product detail
+          example: this is good product
+        unit_price:
+          type: integer
+          description: unit price for product
+          example: 200
+
+    order:
+      type: object
+      properties:
+        order_num:
+          type: string
+          description: order number
+          example: jkjhghfyg
+
+        order_status:
+          type: string
+          description: order current status
+          example: Delivered
+
+        order_date:
+          type: string
+          description: the date that was placed the order
+          example: 2022-04-03
+
+        total_price:
+          type: integer
+          description: total price for this order
+          example: 30
+
+        cust_first_name:
+          type: string
+          description: customer first name
+          example: kenny
+
+        cust_last_name:
+          type: string
+          description: customer last name
+          example: lee
+
+        cust_deli_address:
+          type: string
+          description: customer delivered address
+          example: 759 43ST Brooklyn NY 11220
+
+        cust_contact_num:
+          type: integer
+          description: customer contact number
+          example: 9178678979
+
+        user_id:
+          type: integer
+          description: customer contact number
+          example: 1
+
+    orderForm:
+      type: object
+      properties:
+        orderStatus:
+          type: string
+          description: order current status
+          example: Delivered
+
+        totalPrice:
+          type: integer
+          description: total price for this order
+          example: 30
+
+        firstName:
+          type: string
+          description: customer first name
+          example: kenny
+
+        lastName:
+          type: string
+          description: customer last name
+          example: lee
+
+        deliAddress:
+          type: string
+          description: customer delivered address
+          example: 759 43ST Brooklyn NY 11220
+
+        contactNum:
+          type: integer
+          description: customer contact number
+          example: 9178678979
+
+        ItemLists:
+          type: object
+          properties:
+            quality * price:
+              type: integer
+              description: total price for single product
+              example: 400
+            quality:
+              type: integer
+              description: quality for single product
+              example: 2
+            price:
+              type: integer
+              description: price for single product
+              example: 200
+            name:
+              type: string
+              description: product title
+              example: Computer
+            image:
+              type: string
+              description: product image URL
+              example: https://i.picsum.photos/id/0/5616/3744.jpg?hmac=3GAAioiQziMGEtLbfrdbcoenXoWAW-zlyEAMkfEdBzQ
+            id:
+              type: string
+              description: product ID
+              example: YGHXOSAWEs
+
+    orderProducts:
+      type: object
+      properties:
+        total_price_product:
+          type: integer
+          description: product quality * product unit price
+          example: 40
+
+        product_quality:
+          type: integer
+          description: product amount
+          example: 20
+
+        unit_price:
+          type: integer
+          description: price per product
+          example: 2
+
+        product_title:
+          type: string
+          description: product name
+          example: pen
+
+        product_image:
+          type: string
+          description: product display image
+          example: https://i.picsum.photos/id/0/5616/3744.jpg?hmac=3GAAioiQziMGEtLbfrdbcoenXoWAW-zlyEAMkfEdBzQ
+
+        order_num:
+          type: string
+          description: order number that linked to this product
+          example: hfajsdagw
+
+        product_id:
+          type: string
+          description: product ID
+          example: sf23fsmdg
