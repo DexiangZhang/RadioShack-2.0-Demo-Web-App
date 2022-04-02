@@ -5,10 +5,16 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
 
+const swaggerUI = require("swagger-ui-express");
+const YAML = require("yamljs");
+const swaggerDocument = YAML.load("./swagger_docs/swaggerAPI.yaml");
+
 // middware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
+
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 //common api header
 const userApi = "/api/user";
