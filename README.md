@@ -5,21 +5,21 @@
 
 ### Goal-1: As a user, I want to create a user account when clicking the `New User` button so that I can log into my account securely 
 
-- subtask: create a form group that allows the user to input the user's detail and a `New User` button that allows the user to submit the data to the backend when finish
+- [x] subtask: create a form group that allows the user to input the user's detail and a `Sign Up` button that allows the user to submit the data to the backend when finish
 - [x] subtask: create a backend API that accepts the data in JSON format from the HTTP body and store new data in the user database
 ---
 
 ### Goal-2: As a user, I want to log into my account, so that I can purchase items on the website
 
-- subtask: create a form group that allows users to enter his/her account's username and password with the `Login` button to submit the data to the backend
+- [x] subtask: create a form group that allows users to enter his/her account's username and password with the `Login` button to submit the data to the backend
 - [x] subtasK: write a validation code that compares the user's input and actual data in the database when clicks `Login` button
 - subtask: create a UI that when the result of the comparison fails, pop up a red error message. If successful, switch the page to the actual item page
 ---
 
 ### Goal-3: As a user, I want to logout my account securely when clicking the `Logout` button, so that no one uses my account except myself
 
-- subtask： create a `Logout` button on the upper-right hand corner near the username 
-- subtask: write the code that allows the user to switch to the login page when the user presses the button
+- [x] subtask： create a `Logout` button on the upper-right hand corner near the username 
+- [x] subtask: write the code that allows the user to switch to the login page when the user presses the button
 ---
 
 ### Goal-4: As a user, I want to display all the products with their quality and the products that are been sold out, so that I know which item is popular and how many are left for the remaining product
@@ -38,8 +38,7 @@
 
 ### Goal-6：As a user, I want to show all the items I add to the cart with the total price and quality for each individual item and total price overall including the taxes I need to pay when pressing the checkout button
 
-- subtask: create a checkout page that displays the selected item in a big rectangle box with its quality, price, the total price of the same item
-- subtask: crate another box that displays the total cost before the taxes, taxes, and total cost (after adding taxes) and a button `Checkout` that allows the user to order items
+- subtask: create a checkout page that displays the selected item in a big rectangle box with its quality, price, the total price of the item
 - subtasK: write the code that updates each item's data in the database when the user click `Checkout` button
 - subtask: navigates to a `Thank You` page after click `Checkou` button
 ----
@@ -47,7 +46,7 @@
 ### Goal-7: As a user, I want to view the history of my orders and the status of my order so that I can track my package
 
 - subtask: create a page to display all the orders including previous orders and each order status 
-- subtask: write the code that retrieves the order detail data from the user's database with same user's id 
+- [x] subtask: write the code that retrieves the order detail data from the user's database with same user's id 
 ---
 
 ### Goal-8: As a user, I want to edit my profile information so that I can update my latest personal information
