@@ -192,14 +192,21 @@ paths:
               schema:
                 $ref: "#/components/schemas/product"
 
-  /product/uploadNewProduct:
+  /product/uploadNewProduct/{userID}:
     post:
       tags:
         - product
       description: Upload a new product
-      operationId: craeteNewProduct
+      operationId: createNewProduct
 
-      parameters: []
+      parameters:
+        - in: path
+          name: userID
+          schema:
+            type: integer
+          required: true
+          description: A single user ID
+
       requestBody:
         content:
           application/json:
@@ -308,30 +315,6 @@ components:
     product:
       type: object
       properties:
-        productImage:
-          type: string
-          description: product image URL
-          example: https://i.picsum.photos/id/0/5616/3744.jpg?hmac=3GAAioiQziMGEtLbfrdbcoenXoWAW-zlyEAMkfEdBzQ
-        productName:
-          type: string
-          description: product name
-          example: Computer
-        quality:
-          type: integer
-          description: quality of product
-          example: 3
-        description:
-          type: string
-          description: product detail
-          example: this is good product
-        unitPrice:
-          type: integer
-          description: unit price for product
-          example: 200
-
-    productForm:
-      type: object
-      properties:
         product_id:
           type: string
           description: product ID
@@ -356,7 +339,50 @@ components:
           type: integer
           description: unit price for product
           example: 200
+        product_status:
+          type: string
+          description: product status
+          example: OutofStock
+        category:
+          type: string
+          description: product category
+          example: Electronic
+        user_id:
+          type: integer
+          description: user id who upload this product
+          example: 1
 
+    productForm:
+      type: object
+      properties:
+        productImage:
+          type: string
+          description: product image URL
+          example: https://i.picsum.photos/id/0/5616/3744.jpg?hmac=3GAAioiQziMGEtLbfrdbcoenXoWAW-zlyEAMkfEdBzQ
+        productName:
+          type: string
+          description: product name
+          example: Computer
+        quality:
+          type: integer
+          description: quality of product
+          example: 3
+        description:
+          type: string
+          description: product detail
+          example: this is good product
+        unitPrice:
+          type: integer
+          description: unit price for product
+          example: 200
+        status:
+          type: string
+          description: product status
+          example: OutofStock
+        category:
+          type: string
+          description: product category
+          example: Electronic
     order:
       type: object
       properties:
@@ -465,6 +491,10 @@ components:
               type: string
               description: product ID
               example: YGHXOSAWEs
+            category:
+              type: string
+              description: product category
+              example: Accesories
 
     orderProducts:
       type: object

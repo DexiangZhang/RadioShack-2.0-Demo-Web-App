@@ -169,11 +169,13 @@ let createNewOrder = async (req, res) => {
     for (let product of ItemLists) {
       await pool.query(
         `INSERT INTO ${TABLE_NAMES.orderProdDatabase} 
-        (total_price_product, product_quality, unit_price, product_title, product_image, order_num, product_id) 
+        (total_price_product, product_quality, unit_price, product_title, product_image, order_num, product_category, product_id) 
         VALUES (${product.quality * product.price}, ${product.quality}, ${
           product.price
         }, 
-        '${product.name}', '${product.image}', '${orderNum}', '${product.id}');`
+        '${product.name}', '${product.image}', '${orderNum}', '${
+          product.category
+        }', '${product.id}');`
       );
 
       // update the product databse quality of each order product

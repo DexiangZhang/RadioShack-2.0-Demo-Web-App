@@ -13,6 +13,7 @@ export class UserService {
 
   backend_URL = environment.backendServer;
   backend_port = environment.backendPort;
+  id = localStorage.getItem('user_id');
 
   validateUserLogin(user: any): Observable<any> {
     return this.http.post(
@@ -25,6 +26,22 @@ export class UserService {
   createNewUser(user: any): Observable<any> {
     return this.http.post(
       `${this.backend_URL}:${this.backend_port}/api/user/signUp`,
+      user,
+      {
+        responseType: 'text',
+      }
+    );
+  }
+
+  getUserProfile(): Observable<any> {
+    return this.http.get(
+      `${this.backend_URL}:${this.backend_port}/api/user/getUserProfile/${this.id}`
+    );
+  }
+
+  updateUserProfile(user: any): Observable<any> {
+    return this.http.patch(
+      `${this.backend_URL}:${this.backend_port}/api/user/updateUserProfile/${this.id}`,
       user,
       {
         responseType: 'text',

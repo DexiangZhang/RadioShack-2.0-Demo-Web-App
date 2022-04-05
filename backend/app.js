@@ -43,7 +43,7 @@ app.patch(`${userApi}/updateUserProfile/:userID`, updateUserProfile);
 
 // product api
 app.get(`${productApi}/fetchAllProducts`, getAllProducts);
-app.post(`${productApi}/uploadNewProduct`, createNewProduct);
+app.post(`${productApi}/uploadNewProduct/:userID`, createNewProduct);
 
 app.listen(process.env.PORT, () => {
   console.log(`server has started at PORT ${process.env.PORT}`);

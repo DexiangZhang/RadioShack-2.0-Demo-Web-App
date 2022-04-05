@@ -35,14 +35,22 @@ let createNewProduct = async (req, res) => {
   try {
     // generate unique id
     let product_id = nanoid(10);
+    let id = req.params.userID;
 
-    let { productImage, productName, quality, description, unitPrice } =
-      req.body;
+    let {
+      productImage,
+      productName,
+      quality,
+      description,
+      unitPrice,
+      status,
+      category,
+    } = req.body;
 
     await pool.query(
       `INSERT INTO ${TABLE_NAMES.productDatabase} 
-      (product_id, product_image, product_name, quality, descriptions, unit_price) 
-      VALUES ('${product_id}', '${productImage}','${productName}', ${quality}, '${description}', ${unitPrice});`
+      (product_id, product_image, product_name, quality, descriptions, unit_price, product_status, category, user_id) 
+      VALUES ('${product_id}', '${productImage}','${productName}', ${quality}, '${description}', ${unitPrice}, '${status}', '${category}', ${id});`
     );
 
     return SUCCESS_MSG.uploadProdSucText;
