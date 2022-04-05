@@ -2,22 +2,48 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CallToActionComponent } from './pages/call-to-action/call-to-action.component';
+import { ViewProfileComponent } from './pages/view-profile/view-profile.component';
+import { ViewTransHistoryComponent } from './pages/view-trans-history/view-trans-history.component';
+import { ShareOwnProductsComponent } from './pages/share-own-products/share-own-products.component';
+import { UserDashboardComponent } from './pages/user-dashboard/user-dashboard.component';
+import { ViewProductsComponent } from './pages/view-products/view-products.component';
+import { UserLoginComponent } from './pages/user-login/user-login.component';
+import { UserSignUpComponent } from './pages/user-sign-up/user-sign-up.component';
 
 // style import
 import { InputTextModule } from 'primeng/inputtext';
+import { MenubarModule } from 'primeng/menubar';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
-import { UserLoginComponent } from './pages/user-login/user-login.component';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
-import { UserSignUpComponent } from './pages/user-sign-up/user-sign-up.component';
 import { PasswordModule } from 'primeng/password';
-import { UserDashboardComponent } from './pages/user-dashboard/user-dashboard.component';
-import { ViewProductsComponent } from './pages/view-products/view-products.component';
+import { MenuModule } from 'primeng/menu';
+import { DataViewModule } from 'primeng/dataview';
+import { PanelModule } from 'primeng/panel';
+import { DropdownModule } from 'primeng/dropdown';
+import { DialogModule } from 'primeng/dialog';
+import { RatingModule } from 'primeng/rating';
+import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
+import { CalendarModule } from 'primeng/calendar';
+import { SliderModule } from 'primeng/slider';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ContextMenuModule } from 'primeng/contextmenu';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { ToolbarModule } from 'primeng/toolbar';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { BadgeModule } from 'primeng/badge';
+import { ImageModule } from 'primeng/image';
 
 @NgModule({
   declarations: [
@@ -26,6 +52,10 @@ import { ViewProductsComponent } from './pages/view-products/view-products.compo
     UserSignUpComponent,
     UserDashboardComponent,
     ViewProductsComponent,
+    CallToActionComponent,
+    ViewProfileComponent,
+    ViewTransHistoryComponent,
+    ShareOwnProductsComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,6 +70,28 @@ import { ViewProductsComponent } from './pages/view-products/view-products.compo
     MessageModule,
     FormsModule,
     PasswordModule,
+    MenubarModule,
+    MenuModule,
+    BrowserAnimationsModule,
+    DataViewModule,
+    PanelModule,
+    DropdownModule,
+    DialogModule,
+    RatingModule,
+    TableModule,
+    ToastModule,
+    CalendarModule,
+    SliderModule,
+    MultiSelectModule,
+    ContextMenuModule,
+    ProgressBarModule,
+    ToolbarModule,
+    RadioButtonModule,
+    InputNumberModule,
+    ConfirmDialogModule,
+    InputTextareaModule,
+    BadgeModule,
+    ImageModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -10,12 +10,16 @@ CREATE TABLE IF NOT EXISTS user_accounts(
 );
 
 CREATE TABLE IF NOT EXISTS products(
-    product_id VARCHAR(50) PRIMARY KEY,
-    product_image VARCHAR(50) NOT NULL,
-    product_name VARCHAR(50) UNIQUE NOT NULL,
+    product_id VARCHAR(255) PRIMARY KEY,
+    product_image VARCHAR(255) NOT NULL,
+    product_name VARCHAR(255) UNIQUE NOT NULL,
     quality INT NOT NULL,
-    descriptions VARCHAR(50) UNIQUE NOT NULL,
-    unit_price INT NOT NULL
+    descriptions VARCHAR(65535) UNIQUE NOT NULL,
+    unit_price INT NOT NULL,
+    product_status VARCHAR(255) NOT NULL,
+    category VARCHAR(255) NOT NULL,
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES user_accounts(user_id)
 );
 
 CREATE TABLE IF NOT EXISTS orders(
@@ -36,10 +40,11 @@ CREATE TABLE IF NOT EXISTS order_products(
     total_price_product INT NOT NULL,
     product_quality INT NOT NULL,
     unit_price INT NOT NULL,
-    product_title VARCHAR(50) NOT NULL,
-    product_image VARCHAR(50) NOT NULL,
+    product_title VARCHAR(255) NOT NULL,
+    product_image VARCHAR(255) NOT NULL,
     order_num VARCHAR(255),
-    product_id VARCHAR(50),
+    product_category VARCHAR(255) NOT NULL,
+    product_id VARCHAR(255),
     FOREIGN KEY (order_num) REFERENCES orders(order_num),
     FOREIGN KEY (product_id) REFERENCES products(product_id)
 );

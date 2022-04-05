@@ -21,7 +21,7 @@ const ERROR_MSG = {
 const SUCCESS_MSG = {
   createText: "Thanks! Your account has been successfully created",
   loginSuccessText: "Success",
-  uploadProdSucText: "Uploaded Successful",
+  uploadProdSucText: "Product created!",
   updateSucText: "Your information has been updated!",
   orderSucText: "Order Completed!",
 };
