@@ -11,9 +11,10 @@ import {
 } from '@angular/forms';
 
 import { ChangeDetectorRef } from '@angular/core';
-import { Table } from 'primeng/table';
+import { Table, TableService } from 'primeng/table';
 
 import { PrimeNGConfig } from 'primeng/api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-share-own-products',
@@ -28,7 +29,7 @@ import { PrimeNGConfig } from 'primeng/api';
       }
     `,
   ],
-  providers: [MessageService, ConfirmationService],
+  providers: [MessageService, ConfirmationService, Table, TableService],
 })
 export class ShareOwnProductsComponent implements OnInit {
   formRef = new FormGroup({
@@ -41,22 +42,21 @@ export class ShareOwnProductsComponent implements OnInit {
     category: new FormControl('', [Validators.required]),
   });
 
-  product!: any;
-
   selectedProducts!: any[];
 
   userID: number = 0;
   statuses!: any[];
   products!: any[];
   productDialog!: boolean;
+  productObject!: any;
+  isEditMode!: boolean;
 
   constructor(
     private productService: ProductService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private primengConfig: PrimeNGConfig,
-    private cd: ChangeDetectorRef,
-    private dt: Table
+    private cd: ChangeDetectorRef
   ) {
     this.userID = parseInt(localStorage.getItem('user_id')!);
   }
@@ -67,15 +67,7 @@ export class ShareOwnProductsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // get all product this user has uploaded
-    this.productService.fetchAllProduct().subscribe({
-      next: (data) => {
-        this.products = data.filter(
-          (item: { user_id: number }) => item.user_id === this.userID
-        );
-      },
-      error: (error) => console.log(error),
-    });
+    this.getUserProduct();
 
     this.statuses = [
       { label: 'INSTOCK', value: 'Instock', color: 'success' },
@@ -107,65 +99,116 @@ export class ShareOwnProductsComponent implements OnInit {
     return this.formRef.get('category');
   }
 
-  // will open a small dialog
-  openNew() {
-    this.product = {};
-    this.productDialog = true;
+  getUserProduct() {
+    // get all product this user has uploaded
+    this.productService.fetchAllProduct().subscribe({
+      next: (data) => {
+        this.products = data.filter(
+          (item: { user_id: number }) => item.user_id === this.userID
+        );
+      },
+      error: (error) => console.log(error),
+    });
   }
 
-  // applyFilterGlobal($event: any, stringVal: any) {
-  //   this.dt.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
-  // }
-
-  // deleteSelectedProducts() {
-  //   this.confirmationService.confirm({
-  //     message: 'Are you sure you want to delete the selected products?',
-  //     header: 'Confirm',
-  //     icon: 'pi pi-exclamation-triangle',
-  //     accept: () => {
-  //       this.products = this.products.filter(
-  //         (val) => !this.selectedProducts.includes(val)
-  //       );
-  //       this.selectedProducts = null;
-  //       this.messageService.add({
-  //         severity: 'success',
-  //         summary: 'Successful',
-  //         detail: 'Products Deleted',
-  //         life: 3000,
-  //       });
-  //     },
-  //   });
-  // }
-
-  editProduct(product: any) {
-    this.product = { ...product };
-    this.productDialog = true;
+  severityColor(val: any) {
+    if (val === 'Instock') {
+      return 'success';
+    } else {
+      return 'danger';
+    }
   }
 
-  // deleteProduct(product: any) {
-  //   this.confirmationService.confirm({
-  //     message: 'Are you sure you want to delete ' + product.name + '?',
-  //     header: 'Confirm',
-  //     icon: 'pi pi-exclamation-triangle',
-  //     accept: () => {
-  //       this.products = this.products.filter((val) => val.id !== product.id);
-  //       this.product = {};
-  //       this.messageService.add({
-  //         severity: 'success',
-  //         summary: 'Successful',
-  //         detail: 'Product Deleted',
-  //         life: 3000,
-  //       });
-  //     },
-  //   });
-  // }
+  deleteSelectedProducts() {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete the selected products?',
+      header: 'Confirm',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        for (let ele of this.selectedProducts) {
+          this.productService.deleteProduct(ele.product_id).subscribe({
+            next: (msg) => {
+              if (msg === 'Delete product success!') {
+                this.selectedProducts.shift(); // remove the first element of this array
+              }
+              this.getUserProduct();
+            },
+            error: (error) => console.log(error),
+          });
+        }
+
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Successful',
+          detail: 'Products Deleted',
+          life: 3000,
+        });
+      },
+    });
+  }
+
+  deleteProduct(productObj: any) {
+    this.confirmationService.confirm({
+      message:
+        'Are you sure you want to delete ' + productObj.product_name + '?',
+      header: 'Confirm',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.productService.deleteProduct(productObj.product_id).subscribe({
+          next: (msg) => {
+            if (msg === 'Delete product success!') {
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Successful',
+                detail: msg,
+                life: 3000,
+              });
+              this.getUserProduct();
+            } else {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: msg,
+                life: 3000,
+              });
+            }
+          },
+          error: (error) => console.log(error),
+        });
+      },
+    });
+  }
 
   hideDialog() {
     this.formRef.reset();
     this.productDialog = false;
   }
 
-  submit() {
+  // will open a small dialog
+  openNew() {
+    this.productObject = {};
+    this.productDialog = true;
+    this.isEditMode = false;
+  }
+
+  editProduct(product: any) {
+    this.productObject = { ...product };
+
+    this.formRef.patchValue({
+      productImage: this.productObject.product_image,
+      productName: this.productObject.product_name,
+      quality: this.productObject.quality,
+      description: this.productObject.descriptions,
+      unitPrice: this.productObject.unit_price,
+      status: this.productObject.product_status,
+      category: this.productObject.category,
+    });
+
+    this.productDialog = true;
+    this.isEditMode = true;
+  }
+
+  saveProduct() {
     let productData = this.formRef.value;
 
     this.productService.createNewProduct(productData).subscribe({
@@ -177,6 +220,7 @@ export class ShareOwnProductsComponent implements OnInit {
             detail: msg,
             life: 3000,
           });
+          this.getUserProduct();
         } else {
           this.messageService.add({
             severity: 'error',
@@ -191,5 +235,43 @@ export class ShareOwnProductsComponent implements OnInit {
 
     this.formRef.reset();
     this.productDialog = false;
+  }
+
+  editProductSave() {
+    let productData = this.formRef.value;
+
+    this.productService
+      .updateProduct(productData, this.productObject.product_id)
+      .subscribe({
+        next: (msg) => {
+          if (msg == 'Update product success!') {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Successful',
+              detail: msg,
+              life: 3000,
+            });
+            this.getUserProduct();
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Failure',
+              detail: msg,
+              life: 3000,
+            });
+          }
+        },
+        error: (error) => console.log(error),
+      });
+    this.formRef.reset();
+    this.productDialog = false;
+  }
+
+  submit() {
+    if (!this.isEditMode) {
+      this.saveProduct();
+    } else {
+      this.editProductSave();
+    }
   }
 }
