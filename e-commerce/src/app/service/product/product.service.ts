@@ -30,4 +30,26 @@ export class ProductService {
       `${this.backend_URL}:${this.backend_port}/api/product/fetchAllProducts`
     );
   }
+
+  //delete product
+  deleteProduct(product_id: number): Observable<any> {
+    return this.http.delete(
+      `${this.backend_URL}:${this.backend_port}/api/product/deleteProduct/${product_id}`,
+      {
+        responseType: 'text',
+      }
+    );
+  }
+
+  // update product
+  updateProduct(product: any, product_id: any): Observable<any> {
+    console.log(product);
+    return this.http.patch(
+      `${this.backend_URL}:${this.backend_port}/api/product/updateProductInfo/${product_id}`,
+      product,
+      {
+        responseType: 'text',
+      }
+    );
+  }
 }
