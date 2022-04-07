@@ -13,7 +13,7 @@
 
 - [x] subtask: create a form group that allows users to enter his/her account's username and password with the `Login` button to submit the data to the backend
 - [x] subtasK: write a validation code that compares the user's input and actual data in the database when clicks `Login` button
-- subtask: create a UI that when the result of the comparison fails, pop up a red error message. If successful, switch the page to the actual item page
+- [x] subtask: create a UI that when the result of the comparison fails, pop up a red error message. If successful, switch the page to the actual item page
 ---
 
 ### Goal-3: As a user, I want to logout my account securely when clicking the `Logout` button, so that no one uses my account except myself
@@ -51,9 +51,9 @@
 
 ### Goal-8: As a user, I want to edit my profile information so that I can update my latest personal information
 
-- subtask: create the form group for similar like signUp page with `Save` button
-- subtask: autofill the input field by getting the data from the database once the user click the `Edit Personal Info` section and updates the database info when the user clicks `Save` button
-- subtask: Pop up a green message for update successfully, otherwise a red error message for fail
+- [x] subtask: create the form group for similar like signUp page with `Save` button
+- [x] subtask: autofill the input field by getting the data from the database once the user click the `Edit Personal Info` section and updates the database info when the user clicks `Save` button
+- [x] subtask: Pop up a green message for update successfully, otherwise a red error message for fail
 ---
 
 ### Goal-9: As a user, I want to change my account password, so that I can reset my password whenever I forget
@@ -62,14 +62,15 @@
 - subtask: update the user's password in the database when the user click the `Submit` button with a green message and navigate to the login page after a few seconds
 ---
 
-### Goal-10: As a seller, I want to upload my product to the website for selling so that I can make money 
+### Goal-10: As a user, I want to upload my product to the website for selling so that I can make money 
 
-- subtask: create a form group that allows users to type all the information of the product 
+- [x] subtask: create a form group that allows users to type all the information of the new product 
 - subtask: when the user clicks the `Submit` button, the data will transfer to the backend and the backend will update the data into the existing product table
 - [x] subtask: create API to store new product data into the exisiting product table in database
+- [x] subtask: create CRUD table that allow user to create, read/display, update, and delete the product
 ---
 
-### Goal-11: As a seller, I want to update the status of user's orders so that user can track their product
+### Goal-11: As a user, I want to update the status of user's orders so that user can track their product
 
 - subtask: create a page that allows the seller to view all his orders that is been purchased by the user
 - subtask: create a few selection `In Transit`, `Processed`, `On the WAY`, `Delivered` that allows the seller to modify those item's order status
