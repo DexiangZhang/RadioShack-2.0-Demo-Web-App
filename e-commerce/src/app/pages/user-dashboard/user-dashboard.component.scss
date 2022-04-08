@@ -1,3 +1,46 @@
-// .wrapper {
-//   display: flex;
-// }
+::ng-deep {
+  .p-menubar {
+    border-radius: initial;
+    align-items: center;
+
+    .logoName {
+      font-size: 1.5rem;
+    }
+  }
+  .wrapper {
+    justify-content: space-around;
+
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+
+    .p-menu {
+      height: 100%;
+    }
+
+    .sidebar {
+      width: 20%;
+      margin-left: 1rem;
+      margin-right: 1rem;
+    }
+
+    .content {
+      width: 80%;
+      // margin-left: 1rem;
+      margin-right: 1rem;
+    }
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  // .sidebar {
+  //   width: 20%;
+  //   margin-left: 1rem;
+  //   margin-right: 1rem;
+  // }
+
+  // .content {
+  //   width: 60%;
+  //   // margin-left: 1rem;
+  //   margin-right: 1rem;
+  // }
+}

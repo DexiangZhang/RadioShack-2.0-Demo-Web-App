@@ -218,6 +218,50 @@ paths:
         422:
           description: Product Name or description already existed! Please try again!
 
+  /product/deleteProduct/{productID}:
+    delete:
+      tags:
+        - product
+      description: Delete user product by productID
+      operationId: deleteUserProduct
+
+      parameters:
+        - in: path
+          name: productID
+          schema:
+            type: string
+          required: true
+          description: A single product ID
+
+      responses:
+        200:
+          description: Delete product success!
+
+  /product/updateProductInfo/{productID}:
+    patch:
+      tags:
+        - product
+      description: Update user product by productID
+      operationId: updateUserProductInfo
+
+      parameters:
+        - in: path
+          name: productID
+          schema:
+            type: string
+          required: true
+          description: A single product ID
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/productForm"
+
+      responses:
+        200:
+          description: Updated product success!
+
 components:
   schemas:
     user:

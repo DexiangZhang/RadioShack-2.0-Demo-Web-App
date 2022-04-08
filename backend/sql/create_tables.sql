@@ -11,8 +11,8 @@ CREATE TABLE IF NOT EXISTS user_accounts(
 
 CREATE TABLE IF NOT EXISTS products(
     product_id VARCHAR(255) PRIMARY KEY,
-    product_image VARCHAR(255) NOT NULL,
-    product_name VARCHAR(255) UNIQUE NOT NULL,
+    product_image VARCHAR(65535) NOT NULL,
+    product_name VARCHAR(65535) UNIQUE NOT NULL,
     quality INT NOT NULL,
     descriptions VARCHAR(65535) UNIQUE NOT NULL,
     unit_price INT NOT NULL,
