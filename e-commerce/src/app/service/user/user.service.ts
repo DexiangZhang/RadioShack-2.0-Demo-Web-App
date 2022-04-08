@@ -33,6 +33,12 @@ export class UserService {
     );
   }
 
+  getAllUsers(): Observable<any> {
+    return this.http.get(
+      `${this.backend_URL}:${this.backend_port}/api/user/fetchAllUsers`
+    );
+  }
+
   getUserProfile(): Observable<any> {
     return this.http.get(
       `${this.backend_URL}:${this.backend_port}/api/user/getUserProfile/${this.id}`

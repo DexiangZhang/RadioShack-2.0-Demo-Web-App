@@ -7,7 +7,7 @@ const TABLE_NAMES = {
 
 const ERROR_MSG = {
   defaultText:
-    "Sorry, Something wrong with your program, please check your code!",
+    "Sorry, Something wrong with your program, please check your code or try again!",
   duplicateText:
     "Username, email or phone number already existed! Please try again! ",
   duplicateProdText:
@@ -16,6 +16,9 @@ const ERROR_MSG = {
   accountText: "Username is not match! Please check your username!",
   userErrorText: "User not found!",
   updateErrorText: "Updated Fail!",
+  syntaxtErrorText: "Syntax Error! Please check your input!",
+  deleteProdFailText: "Delete Fail!",
+  updateProdFailText: "Update Fail!",
 };
 
 const SUCCESS_MSG = {
@@ -24,6 +27,8 @@ const SUCCESS_MSG = {
   uploadProdSucText: "Product created!",
   updateSucText: "Your information has been updated!",
   orderSucText: "Order Completed!",
+  deleteProdSucText: "Delete product success!",
+  updateProdSucText: "Update product success!",
 };
 
 module.exports = {

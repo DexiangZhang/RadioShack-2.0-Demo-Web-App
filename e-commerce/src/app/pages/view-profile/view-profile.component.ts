@@ -31,6 +31,10 @@ export class ViewProfileComponent implements OnInit {
     ]),
   });
 
+  info!: any;
+
+  id = localStorage.getItem('user_id');
+
   constructor(
     private primengConfig: PrimeNGConfig,
     public userService: UserService,
@@ -39,21 +43,7 @@ export class ViewProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.userService.getUserProfile().subscribe({
-      next: (data) => {
-        this.formRef.patchValue({
-          email: data.email,
-          firstName: data.first_name,
-          lastName: data.last_name,
-          homeAddress: data.home_address,
-          phoneNum: Number(data.phone_num),
-        });
-      }, // success path
-      error: (err) => {
-        console.log(err);
-      }, // error path
-    });
-
+    this.getUserProfile();
     this.primengConfig.ripple = true;
   }
 
@@ -63,6 +53,28 @@ export class ViewProfileComponent implements OnInit {
 
   get phoneNum() {
     return this.formRef.get('phoneNum');
+  }
+
+  //get user profile
+  getUserProfile() {
+    this.userService.getAllUsers().subscribe({
+      next: (data) => {
+        this.info = data.find(
+          (user: { user_id: string | null }) => user.user_id == this.id
+        );
+
+        this.formRef.patchValue({
+          email: this.info.email,
+          firstName: this.info.first_name,
+          lastName: this.info.last_name,
+          homeAddress: this.info.home_address,
+          phoneNum: Number(this.info.phone_num),
+        });
+      }, // success path
+      error: (err) => {
+        console.log(err);
+      }, // error path
+    });
   }
 
   submit() {
@@ -77,6 +89,7 @@ export class ViewProfileComponent implements OnInit {
             detail: msg,
             life: 3000,
           });
+          this.getUserProfile();
         } else {
           this.messageService.add({
             severity: 'error',

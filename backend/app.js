@@ -30,6 +30,8 @@ const getUserOrders = require("./src/routes/getUserOrders");
 
 const getAllProducts = require("./src/routes/getAllProducts");
 const createNewProduct = require("./src/routes/createNewProduct");
+const deleteProduct = require("./src/routes/deleteProduct");
+const updateProductInfo = require("./src/routes/updateProductInfo");
 
 // user api
 app.get(`${userApi}/fetchAllUsers`, getAllUsers);
@@ -44,6 +46,8 @@ app.patch(`${userApi}/updateUserProfile/:userID`, updateUserProfile);
 // product api
 app.get(`${productApi}/fetchAllProducts`, getAllProducts);
 app.post(`${productApi}/uploadNewProduct/:userID`, createNewProduct);
+app.delete(`${productApi}/deleteProduct/:prodID`, deleteProduct);
+app.patch(`${productApi}/updateProductInfo/:prodID`, updateProductInfo);
 
 app.listen(process.env.PORT, () => {
   console.log(`server has started at PORT ${process.env.PORT}`);
