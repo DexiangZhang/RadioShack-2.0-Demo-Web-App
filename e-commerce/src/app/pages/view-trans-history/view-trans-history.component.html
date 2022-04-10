@@ -1,1 +1,102 @@
-<p>view-trans-history works!</p>
+<div class="card">
+  <p-table
+    [paginator]="true"
+    [rows]="5"
+    [showCurrentPageReport]="true"
+    [value]="orderHistory"
+    responsiveLayout="scroll"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+  >
+    <ng-template pTemplate="caption"> Order History </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th>Order Number</th>
+        <th>Date</th>
+        <th>Cost</th>
+        <th>Status</th>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Phone</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-Singleorder let-columns="columns">
+      <tr>
+        <td>{{ Singleorder.order_num }}</td>
+        <td>{{ Singleorder.order_date | slice: 0:10 }}</td>
+        <td>{{ Singleorder.total_price | currency: "USD" }}</td>
+        <td>
+          <p-badge
+            [value]="Singleorder.order_status.toUpperCase()"
+            [severity]="severityColor(Singleorder.order_status)"
+            styleClass="ml-5"
+          ></p-badge>
+        </td>
+        <td>
+          {{ Singleorder.cust_first_name }}
+          {{ Singleorder.cust_last_name }}
+        </td>
+        <td>{{ Singleorder.cust_deli_address }}</td>
+        <td>{{ Singleorder.cust_contact_num }}</td>
+        <td>
+          <p-button
+            type="button"
+            icon="pi pi-search"
+            (onClick)="viewOrderProducts(Singleorder.order_num)"
+          ></p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <!-- ordered products summary -->
+  <p-dialog
+    header="Order Summary"
+    [(visible)]="viewProductSummary"
+    [style]="{ width: '55vw' }"
+    styleClass="p-fluid"
+    [modal]="true"
+  >
+    <div class="card">
+      <p-table
+        [value]="orderProductList"
+        [paginator]="true"
+        [rows]="5"
+        [showCurrentPageReport]="true"
+        responsiveLayout="scroll"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Order Number</th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Image</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-pro>
+          <tr>
+            <td>{{ pro.order_num }}</td>
+            <td>{{ pro.product_id }}</td>
+            <td>{{ pro.product_title }}</td>
+            <td>
+              <img
+                src="{{ pro.product_image }}"
+                [alt]="pro.product_image"
+                width="100"
+                class="shadow-4"
+              />
+            </td>
+            <td>{{ pro.product_category }}</td>
+            <td>{{ pro.unit_price }}</td>
+            <td>{{ pro.product_quality }}</td>
+            <td>{{ pro.total_price_product }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </p-dialog>
+</div>

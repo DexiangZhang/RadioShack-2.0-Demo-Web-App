@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { PrimeNGConfig } from 'primeng/api';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+
 import { MessageService } from 'primeng/api';
+import { PrimeNGConfig } from 'primeng/api';
+
 import { UserService } from 'src/app/service/user/user.service';
 
 @Component({
@@ -50,18 +47,19 @@ export class ViewProfileComponent implements OnInit {
   get email() {
     return this.formRef.get('email');
   }
-
   get phoneNum() {
     return this.formRef.get('phoneNum');
   }
 
   //get user profile
   getUserProfile() {
-    this.userService.getAllUsers().subscribe({
+    this.userService.getUserProfile().subscribe({
       next: (data) => {
-        this.info = data.find(
-          (user: { user_id: string | null }) => user.user_id == this.id
-        );
+        // get the correct data without refresh window when use getAllprofile() ===> this.info = data.find(
+        //   (user: { user_id: string | null }) => user.user_id == this.id
+        // );
+
+        this.info = data;
 
         this.formRef.patchValue({
           email: this.info.email,
@@ -77,6 +75,7 @@ export class ViewProfileComponent implements OnInit {
     });
   }
 
+  //update user profile
   submit() {
     let updatedInfo = this.formRef.value;
 

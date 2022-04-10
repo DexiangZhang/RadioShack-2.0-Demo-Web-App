@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -43,7 +44,6 @@ export class ProductService {
 
   // update product
   updateProduct(product: any, product_id: any): Observable<any> {
-    console.log(product);
     return this.http.patch(
       `${this.backend_URL}:${this.backend_port}/api/product/updateProductInfo/${product_id}`,
       product,

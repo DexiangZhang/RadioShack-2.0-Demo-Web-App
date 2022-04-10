@@ -1,20 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
-import { ProductService } from 'src/app/service/product/product.service';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-
-import { ChangeDetectorRef } from '@angular/core';
+import { PrimeNGConfig } from 'primeng/api';
 import { Table, TableService } from 'primeng/table';
 
-import { PrimeNGConfig } from 'primeng/api';
-import { Router } from '@angular/router';
+import { ProductService } from 'src/app/service/product/product.service';
 
 @Component({
   selector: 'app-share-own-products',
@@ -43,13 +36,12 @@ export class ShareOwnProductsComponent implements OnInit {
   });
 
   selectedProducts!: any[];
-
-  userID: number = 0;
   statuses!: any[];
   products!: any[];
   productDialog!: boolean;
   productObject!: any;
   isEditMode!: boolean;
+  userID = parseInt(localStorage.getItem('user_id')!);
 
   constructor(
     private productService: ProductService,
@@ -57,9 +49,7 @@ export class ShareOwnProductsComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private primengConfig: PrimeNGConfig,
     private cd: ChangeDetectorRef
-  ) {
-    this.userID = parseInt(localStorage.getItem('user_id')!);
-  }
+  ) {}
 
   // tell angular that you updated the form content after ngAfterContentChecked
   ngAfterContentChecked() {
@@ -77,6 +67,7 @@ export class ShareOwnProductsComponent implements OnInit {
     this.primengConfig.ripple = true;
   }
 
+  // getter function to get the form value
   get productImage() {
     return this.formRef.get('productImage');
   }
@@ -99,8 +90,8 @@ export class ShareOwnProductsComponent implements OnInit {
     return this.formRef.get('category');
   }
 
+  // get all product this user has uploaded
   getUserProduct() {
-    // get all product this user has uploaded
     this.productService.fetchAllProduct().subscribe({
       next: (data) => {
         this.products = data.filter(
@@ -111,6 +102,7 @@ export class ShareOwnProductsComponent implements OnInit {
     });
   }
 
+  // message color selector based on its status
   severityColor(val: any) {
     if (val === 'Instock') {
       return 'success';
@@ -119,6 +111,7 @@ export class ShareOwnProductsComponent implements OnInit {
     }
   }
 
+  // deleete multiple product at once
   deleteSelectedProducts() {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete the selected products?',
@@ -147,6 +140,7 @@ export class ShareOwnProductsComponent implements OnInit {
     });
   }
 
+  // delete single product
   deleteProduct(productObj: any) {
     this.confirmationService.confirm({
       message:
@@ -179,35 +173,20 @@ export class ShareOwnProductsComponent implements OnInit {
     });
   }
 
+  // hide the dialog when click
   hideDialog() {
     this.formRef.reset();
     this.productDialog = false;
   }
 
-  // will open a small dialog
+  // open a small dialog when click "new" button
   openNew() {
     this.productObject = {};
     this.productDialog = true;
     this.isEditMode = false;
   }
 
-  editProduct(product: any) {
-    this.productObject = { ...product };
-
-    this.formRef.patchValue({
-      productImage: this.productObject.product_image,
-      productName: this.productObject.product_name,
-      quality: this.productObject.quality,
-      description: this.productObject.descriptions,
-      unitPrice: this.productObject.unit_price,
-      status: this.productObject.product_status,
-      category: this.productObject.category,
-    });
-
-    this.productDialog = true;
-    this.isEditMode = true;
-  }
-
+  // create the new product
   saveProduct() {
     let productData = this.formRef.value;
 
@@ -237,6 +216,25 @@ export class ShareOwnProductsComponent implements OnInit {
     this.productDialog = false;
   }
 
+  // get exisiting product information when click "edit" button
+  editProduct(product: any) {
+    this.productObject = { ...product };
+
+    this.formRef.patchValue({
+      productImage: this.productObject.product_image,
+      productName: this.productObject.product_name,
+      quality: this.productObject.quality,
+      description: this.productObject.descriptions,
+      unitPrice: this.productObject.unit_price,
+      status: this.productObject.product_status,
+      category: this.productObject.category,
+    });
+
+    this.productDialog = true;
+    this.isEditMode = true;
+  }
+
+  // update the product information
   editProductSave() {
     let productData = this.formRef.value;
 
@@ -267,6 +265,7 @@ export class ShareOwnProductsComponent implements OnInit {
     this.productDialog = false;
   }
 
+  // select the status of the product either new product or exisiting product
   submit() {
     if (!this.isEditMode) {
       this.saveProduct();

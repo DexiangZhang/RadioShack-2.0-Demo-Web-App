@@ -1,3 +1,5 @@
+<p-toast></p-toast>
+
 <div class="card">
   <p-dataView
     #dv
@@ -57,7 +59,7 @@
             </div>
 
             <span class="product-quality"
-              >Quality: {{ productObject.quality }}</span
+              >Quantity: {{ productObject.quality }}</span
             >
             <br /><br />
 
@@ -112,7 +114,7 @@
               {{ productObject.descriptions }}
             </div>
             <span class="product-quality"
-              >Quality: {{ productObject.quality }}</span
+              >Quantity: {{ productObject.quality }}</span
             >
           </div>
 
@@ -145,12 +147,6 @@
       <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-content-between">
           Products
-          <p-button
-            icon="pi pi-chevron-circle-left"
-            label="CANCEL"
-            class="p-button-text p-button-danger"
-            (onClick)="orderSummary = false"
-          ></p-button>
         </div>
       </ng-template>
       <ng-template pTemplate="header">
@@ -177,7 +173,9 @@
 
           <td>{{ productObj.unit_price | currency: "USD" }}</td>
           <td>{{ productObj.category }}</td>
-          <td>{{ this.cartProduct[productObj.product_id] }}</td>
+          <td>
+            {{ this.cartProduct[productObj.product_id] }}
+          </td>
           <td>
             {{
               productObj.unit_price * this.cartProduct[productObj.product_id]
@@ -205,12 +203,11 @@
 
       <p-button
         icon="pi pi-check"
-        (click)="orderSummary = false"
         label="Comfirm Order"
         styleClass="p-button-text"
+        [disabled]="this.totalCart === 0 ? true : false"
+        (click)="this.totalCart !== 0 ? confirmOrder() : null"
       ></p-button>
     </ng-template>
   </p-dialog>
 </div>
-
-776599

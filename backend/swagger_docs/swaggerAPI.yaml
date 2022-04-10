@@ -58,7 +58,7 @@ paths:
       tags:
         - user
       description: Get the user orders history by userID
-      operationId: getUserOrdersHistory
+      operationId: getSingleUserOrders
 
       parameters:
         - in: path
@@ -75,6 +75,46 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/order"
+
+  /user/getAllUserOrders:
+    get:
+      tags:
+        - user
+      description: Get all the user order from the system
+      operationId: getAllUsersOrders
+
+      parameters: []
+
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/order"
+
+  /user/getUserOrderProduct/{orderNum}:
+    get:
+      tags:
+        - user
+      description: Get the order product details by orderNum
+      operationId: getSingleOrderProducts
+
+      parameters:
+        - in: path
+          name: orderNum
+          schema:
+            type: string
+          required: true
+          description: A single order number
+
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/orderProducts"
 
   /user/signUp:
     post:
@@ -122,6 +162,25 @@ paths:
           description: Success
         422:
           description: Username is not match! Please check your username! OR Password incorrect! Please check your password!
+
+  /user/resetPassword:
+    post:
+      tags:
+        - user
+      description: Reset user password
+      operationId: resetUserPassword
+
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/userResetPWForm"
+      responses:
+        200:
+          description: Your password has been reset!
+        422:
+          description: Username is not match! Please check your username!
 
   /user/placeOrder/{userID}:
     post:
@@ -332,6 +391,18 @@ components:
           description: user phone number(10 digits)
           example: 9178678979
 
+    userResetPWForm:
+      type: object
+      properties:
+        username:
+          type: string
+          description: user account name
+          example: user_1
+        newPassword:
+          type: string
+          description: user new password
+          example: 246810qq
+
     userProfile:
       type: object
       properties:
@@ -443,7 +514,7 @@ components:
         order_date:
           type: string
           description: the date that was placed the order
-          example: 2022-04-03
+          example: 2022-04-08T04:00:00.000Z
 
         total_price:
           type: integer
@@ -511,7 +582,7 @@ components:
         ItemLists:
           type: object
           properties:
-            quality * price:
+            totalPrice:
               type: integer
               description: total price for single product
               example: 400
@@ -572,6 +643,11 @@ components:
           type: string
           description: order number that linked to this product
           example: hfajsdagw
+
+        product_category:
+          type: string
+          description: product category
+          example: Accesories
 
         product_id:
           type: string
