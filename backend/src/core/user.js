@@ -3,6 +3,7 @@ require("dotenv").config();
 const { Pool, Client } = require("pg");
 const { nanoid } = require("nanoid");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const {
   TABLE_NAMES,
@@ -81,12 +82,58 @@ let validateUser = async (req, res) => {
       if (matchPassword) {
         let userID = rows[0].user_id;
 
-        return { msg: SUCCESS_MSG.loginSuccessText, id: userID };
+        // generate token
+        // const token = jwt.sign({}, process.env.JWT_SECRET, {
+        //   algorithm: "RS256",
+        //   expiresIn: process.env.EXPIRATION_TIME,
+        //   subject: userID,
+        // });
+
+        // const jwtBearerToken = jwt.sign({}, "RSA_PRIVATE_KEY", {
+        //   algorithm: "RS256",
+        //   expiresIn: 120,
+        //   subject: userID,
+        // });
+
+        // console.log(jwtBearerToken);
+
+        return {
+          msg: SUCCESS_MSG.loginSuccessText,
+
+          id: userID,
+          // idToken: token,
+          // expiresIn: process.env.EXPIRATION_TIME,
+        };
       } else {
         return { msg: ERROR_MSG.passwordText };
       }
     } else {
       return { msg: ERROR_MSG.accountText };
+    }
+  } catch (err) {
+    res.send(ERROR_MSG.defaultText);
+  }
+};
+
+// reset the password
+let resetPassword = async (req, res) => {
+  try {
+    let { username, newPassword } = req.body;
+
+    // encrypt the new password
+    const salt = bcrypt.genSaltSync(parseInt(process.env.SALTS));
+    const hash = bcrypt.hashSync(newPassword, salt);
+
+    let data = await pool.query(
+      `UPDATE ${TABLE_NAMES.usersDatabase} 
+      SET user_password = '${hash}' 
+      WHERE username = '${username}'`
+    );
+
+    if (data.rowCount !== 0) {
+      return SUCCESS_MSG.resetPWDSucText;
+    } else {
+      return ERROR_MSG.accountText;
     }
   } catch (err) {
     res.send(ERROR_MSG.defaultText);
@@ -144,10 +191,6 @@ let createNewOrder = async (req, res) => {
     let id = req.params.userID;
     let orderNum = nanoid(10);
 
-    let date = new Date();
-
-    let dateFormat = date.toISOString().slice(0, 10);
-
     let {
       orderStatus,
       totalPrice,
@@ -160,8 +203,8 @@ let createNewOrder = async (req, res) => {
 
     await pool.query(
       `INSERT INTO ${TABLE_NAMES.orderDatabase} 
-      (order_num, order_status, order_date, total_price, cust_first_name, cust_last_name, cust_deli_address, cust_contact_num, user_id) 
-      VALUES ('${orderNum}', '${orderStatus}', ${dateFormat}, ${totalPrice}, '${firstName}', '${lastName}', '${deliAddress}', '${contactNum}', ${id});`
+      (order_num, order_status, total_price, cust_first_name, cust_last_name, cust_deli_address, cust_contact_num, user_id) 
+      VALUES ('${orderNum}', '${orderStatus}',  ${totalPrice}, '${firstName}', '${lastName}', '${deliAddress}', '${contactNum}', ${id});`
     );
 
     //Itemslist is array of object:    [{....}, {....}]
@@ -170,17 +213,21 @@ let createNewOrder = async (req, res) => {
       await pool.query(
         `INSERT INTO ${TABLE_NAMES.orderProdDatabase} 
         (total_price_product, product_quality, unit_price, product_title, product_image, order_num, product_category, product_id) 
-        VALUES (${product.quality * product.price}, ${product.quality}, ${
-          product.price
-        }, 
-        '${product.name}', '${product.image}', '${orderNum}', '${
-          product.category
-        }', '${product.id}');`
+        VALUES (${product.totalPrice}, ${product.quality}, ${product.price}, 
+        '${product.name}', '${product.image}', '${orderNum}', '${product.category}', '${product.id}');`
       );
 
-      // update the product databse quality of each order product
+      // update the product databse quality of each order product and status for each product
       await pool.query(
-        `UPDATE ${TABLE_NAMES.productDatabase} SET quality = quality - ${product.quality} WHERE product_id = '${product.id}'`
+        `UPDATE ${TABLE_NAMES.productDatabase} 
+        SET quality = quality - ${product.quality}, product_status = CASE WHEN quality = 0 THEN 'OutofStock' ELSE product_status END
+        WHERE product_id = '${product.id}'`
+      );
+
+      await pool.query(
+        `UPDATE ${TABLE_NAMES.productDatabase} 
+        SET product_status = CASE WHEN quality = 0 THEN 'OutofStock' ELSE product_status END
+        WHERE product_id = '${product.id}'`
       );
     }
 
@@ -190,17 +237,41 @@ let createNewOrder = async (req, res) => {
   }
 };
 
-// get all the user order history
+// get all order information from database
+let getAllUserOrders = async () => {
+  try {
+    const data = await pool.query(`SELECT * FROM ${TABLE_NAMES.orderDatabase}`);
+
+    return data.rows;
+  } catch (err) {
+    res.send(ERROR_MSG.defaultText);
+  }
+};
+
+// get the user order history
 let getUserOrders = async (req, res) => {
   try {
     let id = req.params.userID;
-
     const data = await pool.query(
-      `SELECT * FROM ${TABLE_NAMES.orderDatabase} 
-      WHERE user_id = ${id}`
+      `SELECT * FROM ${TABLE_NAMES.orderDatabase} WHERE user_id = ${id}`
     );
 
     // since it might have multiple order from same user, so we return array of objects that match the query
+    return data.rows;
+  } catch (err) {
+    res.send(ERROR_MSG.defaultText);
+  }
+};
+
+let getUserOrderDetails = async (req, res) => {
+  try {
+    let orderNum = req.params.orderNum;
+
+    const data = await pool.query(
+      `SELECT * FROM ${TABLE_NAMES.orderProdDatabase} 
+      WHERE order_num = '${orderNum}'`
+    );
+
     return data.rows;
   } catch (err) {
     res.send(ERROR_MSG.defaultText);
@@ -215,4 +286,7 @@ module.exports = {
   updateUserProfile,
   createNewOrder,
   getUserOrders,
+  getUserOrderDetails,
+  getAllUserOrders,
+  resetPassword,
 };

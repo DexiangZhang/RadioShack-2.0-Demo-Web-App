@@ -1,0 +1,66 @@
+<div class="wrapper">
+  <form [formGroup]="formRef" (ngSubmit)="resetPassword()">
+    <div class="surface-card p-4 shadow-2 border-round w-full lg:w-6">
+      <div class="text-center mb-5">
+        <img
+          src="../../../assets/images/logos/hyperledger.svg"
+          alt="hyperledger_logo"
+          height="50"
+          class="mb-3"
+        />
+        <div class="text-900 text-3xl font-medium mb-3">
+          Reset User Password
+        </div>
+        <span class="text-600 font-medium line-height-3"
+          >Switch to Login page?</span
+        >
+        <a
+          routerLink="/"
+          class="font-medium no-underline ml-2 text-blue-500 cursor-pointer"
+          >Login today!</a
+        >
+      </div>
+
+      <div *ngIf="isRecMsg" class="mx-8">
+        <p-message severity="{{ msgType }}" text="{{ msg }}"></p-message
+        ><br /><br />
+      </div>
+
+      <div>
+        <label for="usernameInput" class="block text-900 font-medium mb-2"
+          >Username</label
+        >
+
+        <input
+          id="usernameInput"
+          type="text"
+          pInputText
+          class="w-full mb-3"
+          formControlName="username"
+        />
+
+        <label for="passwordInput" class="block text-900 font-medium mb-2"
+          >New Password</label
+        >
+        <input
+          id="passwordInput"
+          type="password"
+          pInputText
+          class="w-full mb-3"
+          formControlName="newPassword"
+        />
+
+        <button
+          pButton
+          pRipple
+          label="Sign In"
+          icon="pi pi-user"
+          class="w-full"
+          type="submit"
+          style="margin-top: 1rem"
+          [disabled]="!formRef.valid"
+        ></button>
+      </div>
+    </div>
+  </form>
+</div>

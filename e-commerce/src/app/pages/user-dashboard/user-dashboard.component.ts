@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { MenuItem } from 'primeng/api';
 
 @Component({
@@ -16,45 +17,42 @@ export class UserDashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // create the naviagtor menu
     this.items = [
       {
-        label: 'Home',
-        items: [
-          {
-            label: 'Dashboard',
-            icon: 'pi pi-home',
-            routerLink: ['advertise'],
-          },
-        ],
+        label: 'Dashboard',
+        icon: 'pi pi-home',
+        routerLink: ['.'], // default page for child component router
+        routerLinkActiveOptions: { exact: true },
       },
       {
-        label: 'Main',
-        items: [
-          {
-            label: 'Market',
-            icon: 'pi pi-fw pi-globe',
-            routerLink: ['market'],
-          }, // -> add to card, click cart to show new page, with amount and button to submit order
-          {
-            label: 'Product',
-            icon: 'pi pi-fw pi-box',
-            routerLink: ['product'],
-          }, // crud user product
-          {
-            label: 'Transaction',
-            icon: 'pi pi-fw pi-history',
-            routerLink: ['transaction'],
-          }, // order hsitroy
-          {
-            label: 'Profile',
-            icon: 'pi pi-fw pi-id-card',
-            routerLink: ['profile'],
-          },
-        ],
+        label: 'Market',
+        icon: 'pi pi-fw pi-globe',
+        routerLink: ['market'],
+        routerLinkActiveOptions: { exact: true },
+      },
+      {
+        label: 'Product',
+        icon: 'pi pi-fw pi-box',
+        routerLink: ['product'],
+        routerLinkActiveOptions: { exact: true },
+      },
+      {
+        label: 'Transaction',
+        icon: 'pi pi-fw pi-history',
+        routerLink: ['transaction'],
+        routerLinkActiveOptions: { exact: true },
+      },
+      {
+        label: 'Profile',
+        icon: 'pi pi-fw pi-id-card',
+        routerLink: ['profile'],
+        routerLinkActiveOptions: { exact: true },
       },
     ];
   }
 
+  // logout the user and redirect to login page
   logout() {
     localStorage.removeItem('user_id');
     this.router.navigate(['']);

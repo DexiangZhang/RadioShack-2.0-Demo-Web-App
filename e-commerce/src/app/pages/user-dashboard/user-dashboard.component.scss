@@ -2,36 +2,34 @@
   .p-menubar {
     border-radius: initial;
     align-items: center;
-
-    .logoName {
-      font-size: 1.5rem;
+    background: var(--surface-card);
+  }
+  .p-menubar-start {
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    margin-right: 3rem;
+  }
+  .container {
+    .content {
+      width: 90%;
+      margin: auto;
+      margin-top: 2rem;
     }
   }
-  .wrapper {
-    justify-content: space-around;
 
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
-
-    .p-menu {
-      height: 100%;
-    }
-
-    .sidebar {
-      width: 20%;
-      margin-left: 1rem;
-      margin-right: 1rem;
-    }
-
-    .content {
-      width: 80%;
-      // margin-left: 1rem;
-      margin-right: 1rem;
-    }
+  .container.flex {
+    background: #343e4d;
   }
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 768px) {
+  ::ng-deep {
+    .p-dataview-layout-options.p-selectbutton.p-buttonset {
+      margin-top: 1.2em;
+    }
+  }
+
   // .sidebar {
   //   width: 20%;
   //   margin-left: 1rem;

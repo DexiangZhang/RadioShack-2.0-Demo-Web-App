@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+
 const app = express();
 
 const swaggerUI = require("swagger-ui-express");
@@ -27,6 +28,9 @@ const getUserProfile = require("./src/routes/getUserProfile");
 const updateUserProfile = require("./src/routes/updateUserProfile");
 const placeUserOrder = require("./src/routes/placeUserOrder");
 const getUserOrders = require("./src/routes/getUserOrders");
+const getUserOrderProdInfo = require("./src/routes/getOrderProdInfo");
+const getAllUserOrders = require("./src/routes/getAllUserOrders");
+const resetUserPassword = require("./src/routes/resetUserPassword");
 
 const getAllProducts = require("./src/routes/getAllProducts");
 const createNewProduct = require("./src/routes/createNewProduct");
@@ -35,9 +39,12 @@ const updateProductInfo = require("./src/routes/updateProductInfo");
 
 // user api
 app.get(`${userApi}/fetchAllUsers`, getAllUsers);
+app.get(`${userApi}/getAllUserOrders`, getAllUserOrders);
 app.get(`${userApi}/getUserProfile/:userID`, getUserProfile);
 app.get(`${userApi}/getUserOrders/:userID`, getUserOrders);
+app.get(`${userApi}/getUserOrderProduct/:orderNum`, getUserOrderProdInfo);
 
+app.post(`${userApi}/resetPassword`, resetUserPassword);
 app.post(`${userApi}/signUp`, createNewUser);
 app.post(`${userApi}/signIn`, userLogin);
 app.post(`${userApi}/placeOrder/:userID`, placeUserOrder);

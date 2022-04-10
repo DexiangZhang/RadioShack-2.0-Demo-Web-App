@@ -1,14 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+
 import { PrimeNGConfig } from 'primeng/api';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
 
 import { UserService } from 'src/app/service/user/user.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-sign-up',
@@ -27,6 +23,7 @@ export class UserSignUpComponent implements OnInit {
     lastName: new FormControl('', [Validators.required]),
     homeAddress: new FormControl('', [Validators.required]),
     phoneNum: new FormControl('', [
+      // allow the phone number only to be numbers and 10 digits
       Validators.required,
       Validators.min(1000000000),
       Validators.max(9999999999),
@@ -51,11 +48,11 @@ export class UserSignUpComponent implements OnInit {
   get email() {
     return this.formRef.get('email');
   }
-
   get phoneNum() {
     return this.formRef.get('phoneNum');
   }
 
+  // create new user accounts
   submit() {
     let newUserData = this.formRef.value;
 

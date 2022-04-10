@@ -26,7 +26,8 @@ const SUCCESS_MSG = {
   loginSuccessText: "Success",
   uploadProdSucText: "Product created!",
   updateSucText: "Your information has been updated!",
-  orderSucText: "Order Completed!",
+  resetPWDSucText: "Your password has been reset!",
+  orderSucText: "Thank you for your order!",
   deleteProdSucText: "Delete product success!",
   updateProdSucText: "Update product success!",
 };

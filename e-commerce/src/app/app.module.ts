@@ -44,6 +44,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { BadgeModule } from 'primeng/badge';
 import { ImageModule } from 'primeng/image';
+import { UserResetPWComponent } from './pages/user-reset-pw/user-reset-pw.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +58,8 @@ import { ImageModule } from 'primeng/image';
     ViewProfileComponent,
     ViewTransHistoryComponent,
     ShareOwnProductsComponent,
+    UserResetPWComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,

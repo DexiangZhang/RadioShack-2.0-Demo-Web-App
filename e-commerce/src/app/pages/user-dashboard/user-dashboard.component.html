@@ -1,4 +1,4 @@
-<p-menubar>
+<p-menubar [model]="items">
   <ng-template pTemplate="start">
     <img
       src="../../../assets/images/logos/hyperledger.svg"
@@ -7,10 +7,7 @@
     />
 
     <span class="logoName">EletronX</span>
-
-    <!-- <i class="pi pi-list mx-2" (click)="menu.toggle($event)></i> -->
   </ng-template>
-
   <ng-template pTemplate="end">
     <button
       pButton
@@ -25,13 +22,7 @@
   </ng-template>
 </p-menubar>
 
-<div class="wrapper flex">
-  <div class="sidebar">
-    <!-- <p-menu #menu [model]="items"></p-menu> -->
-
-    <p-menu #menu [model]="items"></p-menu>
-  </div>
-
+<div class="container flex">
   <div class="content">
     <router-outlet></router-outlet>
   </div>

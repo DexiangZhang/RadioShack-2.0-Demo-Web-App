@@ -1,6 +1,5 @@
 <div class="wrapper">
   <form [formGroup]="formRef" (ngSubmit)="submit()">
-    <!-- can make the form center and expand background color: class="align-items-center flex justify-content-center lg:px-8 md:px-6 px-4 py-8 surface-ground ng-star-inserted" -->
     <div class="surface-card p-4 shadow-2 border-round w-full lg:w-6">
       <div class="text-center mb-5">
         <img
@@ -56,10 +55,13 @@
               id="rememberme1"
               [binary]="true"
               styleClass="mr-2"
+              formControlName="rememberMe"
             ></p-checkbox>
             <label for="rememberme1" class="text-900">Remember me</label>
           </div>
+
           <a
+            routerLink="/resetPassword"
             class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer"
             >Forgot password?</a
           >

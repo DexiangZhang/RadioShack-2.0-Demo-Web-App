@@ -25,12 +25,12 @@ CREATE TABLE IF NOT EXISTS products(
 CREATE TABLE IF NOT EXISTS orders(
     order_num VARCHAR(255) PRIMARY KEY,
     order_status VARCHAR(50) NOT NULL,
-    order_date VARCHAR(50) NOT NULL,
+    order_date DATE NOT NULL DEFAULT CURRENT_DATE,
     total_price INT NOT NULL,
     cust_first_name VARCHAR(50) NOT NULL,
     cust_last_name VARCHAR(50) NOT NULL,
     cust_deli_address VARCHAR(50) NOT NULL,
-    cust_contact_num CHAR(10) UNIQUE NOT NULL,
+    cust_contact_num CHAR(10) NOT NULL,
     user_id INT,
     FOREIGN KEY (user_id) REFERENCES user_accounts(user_id)
 );
