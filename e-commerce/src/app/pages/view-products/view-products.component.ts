@@ -29,10 +29,11 @@ export class ViewProductsComponent implements OnInit {
   orderDetail: any = {};
   user_id = localStorage.getItem('user_id');
   user: any;
-  outOfLimit = false;
-  orderLimitCount: any = {};
 
   orderStatus = ['Shipped', 'Processing', 'Delivered', 'Transit'];
+
+  // check if user add the maxium quantity of product
+  countQualityLimit: any = {};
 
   constructor(
     private primengConfig: PrimeNGConfig,
@@ -111,12 +112,15 @@ export class ViewProductsComponent implements OnInit {
       this.totalCart++;
       this.totalPrice += product.unit_price;
 
+      this.countQualityLimit[product.product_id] = false;
       // make sure the list only contains unique product
       this.cartProductList.push(product);
     } else if (this.cartProduct[product.product_id] < product.quality) {
       this.cartProduct[product.product_id] += 1;
       this.totalCart++;
       this.totalPrice += product.unit_price;
+    } else {
+      this.countQualityLimit[product.product_id] = true;
     }
   }
 
@@ -131,7 +135,7 @@ export class ViewProductsComponent implements OnInit {
     this.totalCart = 0;
     this.totalPrice = 0;
     this.cartProductList = [];
-
+    this.countQualityLimit = {};
     this.orderSummary = false;
   }
 

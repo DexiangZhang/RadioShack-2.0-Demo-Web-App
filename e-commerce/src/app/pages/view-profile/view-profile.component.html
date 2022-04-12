@@ -13,96 +13,98 @@
       </div>
 
       <div>
-        <div class="mb-3">
-          <!-- email -->
-          <label for="emailInput" class="block text-900 font-medium mb-2"
-            >Email</label
+        <p-fieldset legend="Personal Information">
+          <div class="mb-3">
+            <!-- email -->
+            <label for="emailInput" class="block text-900 font-medium mb-2"
+              >Email</label
+            >
+            <input
+              id="emailInput"
+              type="email"
+              pInputText
+              class="w-full"
+              formControlName="email"
+              aria-describedby="email-help"
+            />
+            <small
+              *ngIf="email?.errors?.['pattern']"
+              id="email-help"
+              class="p-error"
+              >Email is invalid</small
+            >
+          </div>
+
+          <!-- first name -->
+          <label for="fNameInput" class="block text-900 font-medium mb-2"
+            >First Name</label
           >
           <input
-            id="emailInput"
-            type="email"
+            id="fNameInput"
+            type="text"
             pInputText
-            class="w-full"
-            formControlName="email"
-            aria-describedby="email-help"
+            class="w-full mb-3"
+            formControlName="firstName"
           />
-          <small
-            *ngIf="email?.errors?.['pattern']"
-            id="email-help"
-            class="p-error"
-            >Email is invalid</small
-          >
-        </div>
 
-        <!-- first name -->
-        <label for="fNameInput" class="block text-900 font-medium mb-2"
-          >First Name</label
-        >
-        <input
-          id="fNameInput"
-          type="text"
-          pInputText
-          class="w-full mb-3"
-          formControlName="firstName"
-        />
-
-        <!-- last name -->
-        <label for="lNameInput" class="block text-900 font-medium mb-2"
-          >Last Name</label
-        >
-        <input
-          id="lNameInput"
-          type="text"
-          pInputText
-          class="w-full mb-3"
-          formControlName="lastName"
-        />
-
-        <!-- home address -->
-        <label for="addressInput" class="block text-900 font-medium mb-2"
-          >Address</label
-        >
-        <input
-          id="addressInput"
-          type="text"
-          pInputText
-          class="w-full mb-3"
-          formControlName="homeAddress"
-        />
-
-        <div class="mb-3">
-          <!-- phone number -->
-          <label for="phoneInput" class="block text-900 font-medium mb-2"
-            >Phone Number</label
+          <!-- last name -->
+          <label for="lNameInput" class="block text-900 font-medium mb-2"
+            >Last Name</label
           >
           <input
-            id="phoneInput"
-            type="number"
+            id="lNameInput"
+            type="text"
             pInputText
-            class="w-full"
-            formControlName="phoneNum"
-            aria-describedby="phone-help"
+            class="w-full mb-3"
+            formControlName="lastName"
           />
-          <small
-            *ngIf="phoneNum?.errors?.['max']"
-            id="phone-help"
-            class="p-error"
-            >Phone number need to be 10 digits</small
+
+          <!-- home address -->
+          <label for="addressInput" class="block text-900 font-medium mb-2"
+            >Address</label
           >
-          <small
-            *ngIf="phoneNum?.errors?.['min']"
-            id="phone-help"
-            class="p-error"
-            >Phone number need to be 10 digits</small
-          >
-        </div>
+          <input
+            id="addressInput"
+            type="text"
+            pInputText
+            class="w-full mb-3"
+            formControlName="homeAddress"
+          />
+
+          <div class="mb-3">
+            <!-- phone number -->
+            <label for="phoneInput" class="block text-900 font-medium mb-2"
+              >Phone Number</label
+            >
+            <input
+              id="phoneInput"
+              type="number"
+              pInputText
+              class="w-full"
+              formControlName="phoneNum"
+              aria-describedby="phone-help"
+            />
+            <small
+              *ngIf="phoneNum?.errors?.['max']"
+              id="phone-help"
+              class="p-error"
+              >Phone number need to be 10 digits</small
+            >
+            <small
+              *ngIf="phoneNum?.errors?.['min']"
+              id="phone-help"
+              class="p-error"
+              >Phone number need to be 10 digits</small
+            >
+          </div>
+        </p-fieldset>
 
         <button
           pButton
           pRipple
           label="Update Profile"
           icon="pi pi-user"
-          class="w-full"
+          class="w-full mt-3"
           type="submit"
           [disabled]="!formRef.valid"
         ></button>

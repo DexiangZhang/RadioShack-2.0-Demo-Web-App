@@ -2,17 +2,22 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { MenuItem } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-user-dashboard',
   templateUrl: './user-dashboard.component.html',
   styleUrls: ['./user-dashboard.component.scss'],
+  providers: [ConfirmationService],
 })
 export class UserDashboardComponent implements OnInit {
   user_id: number = 0;
 
   items!: MenuItem[];
-  constructor(public router: Router) {
+  constructor(
+    public router: Router,
+    private confirmationService: ConfirmationService
+  ) {
     this.user_id = parseInt(localStorage.getItem('user_id')!);
   }
 
@@ -54,7 +59,16 @@ export class UserDashboardComponent implements OnInit {
 
   // logout the user and redirect to login page
   logout() {
-    localStorage.removeItem('user_id');
-    this.router.navigate(['']);
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to logout?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-circle',
+      acceptLabel: 'Logout',
+      rejectLabel: 'Cancel',
+      accept: () => {
+        localStorage.removeItem('user_id');
+        this.router.navigate(['']);
+      },
+    });
   }
 }

@@ -25,29 +25,35 @@
         <p-message severity="error" text="{{ msg }}"></p-message><br /><br />
       </div>
 
-      <div>
-        <label for="usernameInput" class="block text-900 font-medium mb-2"
-          >Username</label
-        >
+      <div class="login_content">
+        <div class="grid">
+          <div class="col-12">
+            <div class="p-inputgroup">
+              <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+              <input
+                id="usernameInput"
+                type="text"
+                pInputText
+                placeholder="Username"
+                formControlName="username"
+              />
+            </div>
+          </div>
 
-        <input
-          id="usernameInput"
-          type="text"
-          pInputText
-          class="w-full mb-3"
-          formControlName="username"
-        />
-
-        <label for="passwordInput" class="block text-900 font-medium mb-2"
-          >Password</label
-        >
-        <input
-          id="passwordInput"
-          type="password"
-          pInputText
-          class="w-full mb-3"
-          formControlName="password"
-        />
+          <div class="col-12">
+            <div class="p-inputgroup">
+              <span class="p-inputgroup-addon"><i class="pi pi-lock"></i></span>
+              <input
+                id="passwordInput"
+                type="password"
+                pInputText
+                placeholder="Password"
+                formControlName="password"
+              />
+            </div>
+          </div>
+        </div>
+        <br />
 
         <div class="flex align-items-center justify-content-between mb-6">
           <div class="flex align-items-center">
