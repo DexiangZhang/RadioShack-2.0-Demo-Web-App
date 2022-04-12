@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+// own components
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CallToActionComponent } from './pages/call-to-action/call-to-action.component';
@@ -14,6 +15,8 @@ import { UserDashboardComponent } from './pages/user-dashboard/user-dashboard.co
 import { ViewProductsComponent } from './pages/view-products/view-products.component';
 import { UserLoginComponent } from './pages/user-login/user-login.component';
 import { UserSignUpComponent } from './pages/user-sign-up/user-sign-up.component';
+import { UserResetPWComponent } from './pages/user-reset-pw/user-reset-pw.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 // style import
 import { InputTextModule } from 'primeng/inputtext';
@@ -44,8 +47,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { BadgeModule } from 'primeng/badge';
 import { ImageModule } from 'primeng/image';
-import { UserResetPWComponent } from './pages/user-reset-pw/user-reset-pw.component';
-import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { FieldsetModule } from 'primeng/fieldset';
 
 @NgModule({
   declarations: [
@@ -96,6 +98,7 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
     InputTextareaModule,
     BadgeModule,
     ImageModule,
+    FieldsetModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

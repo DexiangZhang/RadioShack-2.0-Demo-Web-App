@@ -83,19 +83,26 @@ let validateUser = async (req, res) => {
         let userID = rows[0].user_id;
 
         // generate token
-        // const token = jwt.sign({}, process.env.JWT_SECRET, {
-        //   algorithm: "RS256",
-        //   expiresIn: process.env.EXPIRATION_TIME,
-        //   subject: userID,
-        // });
 
-        // const jwtBearerToken = jwt.sign({}, "RSA_PRIVATE_KEY", {
+        // error message for console.log
+        //         HttpErrorResponse {headers: HttpHeaders, status: 200, statusText: 'OK', url: 'http://localhost:8080/api/user/signIn', ok: false, …}
+        // error: {error: SyntaxError: Unexpected token S in JSON at position 0 at JSON.parse (<anonymous>) at XMLHtt…, text: 'Sorry, Something wrong with your program, please check your code or try again!'}
+        // headers: HttpHeaders {normalizedNames: Map(0), lazyUpdate: null, lazyInit: ƒ}
+        // message: "Http failure during parsing for http://localhost:8080/api/user/signIn"
+        // name: "HttpErrorResponse"
+        // ok: false
+        // status: 200
+        // statusText: "OK"
+        // url: "http://localhost:8080/api/user/signIn"
+        // [[Prototype]]: HttpResponseBase
+
+        // let token = jwt.sign({}, "something", {
         //   algorithm: "RS256",
         //   expiresIn: 120,
         //   subject: userID,
         // });
 
-        // console.log(jwtBearerToken);
+        // console.log(token);
 
         return {
           msg: SUCCESS_MSG.loginSuccessText,

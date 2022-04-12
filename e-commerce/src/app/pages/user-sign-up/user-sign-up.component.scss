@@ -1,7 +1,18 @@
+:host ::ng-deep {
+  .p-fieldset {
+    margin-bottom: 3em;
+  }
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+form {
+  margin-left: 3rem;
+  margin-right: 3rem;
 }
 
 .wrapper {

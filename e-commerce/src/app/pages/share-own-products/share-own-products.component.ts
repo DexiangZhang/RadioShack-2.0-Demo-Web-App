@@ -117,6 +117,7 @@ export class ShareOwnProductsComponent implements OnInit {
       message: 'Are you sure you want to delete the selected products?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
+      rejectLabel: 'Cancel',
       accept: () => {
         for (let ele of this.selectedProducts) {
           this.productService.deleteProduct(ele.product_id).subscribe({

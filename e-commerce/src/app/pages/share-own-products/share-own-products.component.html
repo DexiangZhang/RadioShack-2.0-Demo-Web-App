@@ -91,7 +91,7 @@
           />
         </td>
         <td>{{ productObject.unit_price | currency: "USD" }}</td>
-        <td>{{ productObject.quality }}</td>
+        <td style="text-align: center">{{ productObject.quality }}</td>
         <td>{{ productObject.category }}</td>
         <td>
           <p-badge
@@ -288,7 +288,7 @@
         pRipple
         label="Cancel"
         icon="pi pi-times"
-        class="p-button-text"
+        class="p-button-text p-button-danger"
         type="button"
         (click)="hideDialog()"
       ></button>
@@ -297,7 +297,7 @@
         pRipple
         label="Save"
         icon="pi pi-check"
-        class="p-button-text"
+        class="p-button-text p-button-success"
         type="submit"
         [disabled]="!formRef.valid"
       ></button>
@@ -305,4 +305,4 @@
   </p-dialog>
 </form>
 
-<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+<p-confirmDialog [style]="{ width: '50vw' }"></p-confirmDialog>

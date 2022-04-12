@@ -1,4 +1,26 @@
 ::ng-deep {
+  .pi-exclamation-circle:before {
+    content: "\e989";
+    color: indianred;
+  }
+
+  .logoutDialog {
+    .p-confirm-dialog-reject,
+    .p-confirm-dialog-reject:hover,
+    .p-confirm-dialog-reject:active {
+      background: none;
+      border: none;
+      color: #f19ea6;
+    }
+
+    .p-confirm-dialog-accept,
+    .p-confirm-dialog-accept:hover,
+    .p-confirm-dialog-accept:active {
+      background: #9fdaa8;
+      border: 1px solid #78cc86;
+    }
+  }
+
   .p-menubar {
     border-radius: initial;
     align-items: center;
