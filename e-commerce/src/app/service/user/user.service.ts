@@ -32,10 +32,11 @@ export class UserService {
   //   localStorage.setItem('expires_at', expiresAt);
   // }
 
-  // logout() {
-  //   localStorage.removeItem('id_token');
-  //   localStorage.removeItem('expires_at');
-  // }
+  logout() {
+    localStorage.removeItem('id_token');
+    localStorage.removeItem('expires_at');
+    localStorage.removeItem('user_id');
+  }
 
   // create new account
   createNewUser(user: any): Observable<any> {

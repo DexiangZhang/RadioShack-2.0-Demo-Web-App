@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -17,6 +17,7 @@ import { UserLoginComponent } from './pages/user-login/user-login.component';
 import { UserSignUpComponent } from './pages/user-sign-up/user-sign-up.component';
 import { UserResetPWComponent } from './pages/user-reset-pw/user-reset-pw.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { TokenService } from './service/token/token.service';
 
 // style import
 import { InputTextModule } from 'primeng/inputtext';
@@ -100,7 +101,13 @@ import { FieldsetModule } from 'primeng/fieldset';
     ImageModule,
     FieldsetModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenService,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

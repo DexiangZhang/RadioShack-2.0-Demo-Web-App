@@ -10,8 +10,12 @@ const swaggerUI = require("swagger-ui-express");
 const YAML = require("yamljs");
 const swaggerDocument = YAML.load("./swagger_docs/swaggerAPI.yaml");
 
+const expressJwt = require("express-jwt");
+const fs = require("fs");
+
 // middware
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
 app.use(bodyParser.json());
 app.use(cors());
 
@@ -37,10 +41,28 @@ const createNewProduct = require("./src/routes/createNewProduct");
 const deleteProduct = require("./src/routes/deleteProduct");
 const updateProductInfo = require("./src/routes/updateProductInfo");
 
+// get public key and decode the key for middleware
+
+// TODO: have error to get the key from the file
+const RSA_PUBLIC_KEY = fs.readFile("jwt_keys/publicKey.pem", (err) => {
+  console.log(err);
+});
+const checkIfAuthenticated = expressJwt({
+  secret: RSA_PUBLIC_KEY,
+  algorithms: ["RS256"],
+});
+
 // user api
 app.get(`${userApi}/fetchAllUsers`, getAllUsers);
 app.get(`${userApi}/getAllUserOrders`, getAllUserOrders);
-app.get(`${userApi}/getUserProfile/:userID`, getUserProfile);
+
+// not testing yet, need to testing
+app.get(
+  `${userApi}/getUserProfile/:userID`,
+  checkIfAuthenticated,
+  getUserProfile
+);
+
 app.get(`${userApi}/getUserOrders/:userID`, getUserOrders);
 app.get(`${userApi}/getUserOrderProduct/:orderNum`, getUserOrderProdInfo);
 

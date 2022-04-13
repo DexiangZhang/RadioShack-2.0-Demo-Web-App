@@ -4,6 +4,8 @@ const { Pool, Client } = require("pg");
 const { nanoid } = require("nanoid");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
+const fs = require("fs");
 
 const {
   TABLE_NAMES,
@@ -82,34 +84,73 @@ let validateUser = async (req, res) => {
       if (matchPassword) {
         let userID = rows[0].user_id;
 
-        // generate token
+        // works, but not work when add jwt.sign
+        // generateKeyPair(
+        //   "rsa",
+        //   {
+        //     modulusLength: 2048,
+        //     publicKeyEncoding: {
+        //       type: "pkcs1",
+        //       format: "pem",
+        //     },
+        //     privateKeyEncoding: {
+        //       type: "pkcs1",
+        //       format: "pem",
+        //     },
+        //   },
+        //   (err, publicKey, privateKey) => {
+        //     if (err) {
+        //       console.log(err);
+        //     }
+        //     publicKeyValue = publicKey;
+        //     privateKeyValue = privateKey;
+        //   }
+        // );
 
-        // error message for console.log
-        //         HttpErrorResponse {headers: HttpHeaders, status: 200, statusText: 'OK', url: 'http://localhost:8080/api/user/signIn', ok: false, …}
-        // error: {error: SyntaxError: Unexpected token S in JSON at position 0 at JSON.parse (<anonymous>) at XMLHtt…, text: 'Sorry, Something wrong with your program, please check your code or try again!'}
-        // headers: HttpHeaders {normalizedNames: Map(0), lazyUpdate: null, lazyInit: ƒ}
-        // message: "Http failure during parsing for http://localhost:8080/api/user/signIn"
-        // name: "HttpErrorResponse"
-        // ok: false
-        // status: 200
-        // statusText: "OK"
-        // url: "http://localhost:8080/api/user/signIn"
-        // [[Prototype]]: HttpResponseBase
+        // generate public and private key for RSA256 algorithm
+        const { privateKey, publicKey } = crypto.generateKeyPairSync("rsa", {
+          modulusLength: 2048,
+          publicKeyEncoding: {
+            type: "pkcs1",
+            format: "pem",
+          },
+          privateKeyEncoding: {
+            type: "pkcs1",
+            format: "pem",
+          },
+        });
 
-        // let token = jwt.sign({}, "something", {
-        //   algorithm: "RS256",
-        //   expiresIn: 120,
-        //   subject: userID,
-        // });
+        fs.writeFile(
+          "jwt_keys/publicKey.pem",
+          `PUBLIC_KEY=${publicKey}`,
+          (err) => {
+            if (err !== null) {
+              console.log(err);
+            }
+          }
+        );
 
-        // console.log(token);
+        fs.writeFile(
+          "jwt_keys/privateKey.pem",
+          `PRIVATE_KEY=${privateKey}`,
+          (err) => {
+            if (err !== null) {
+              console.log(err);
+            }
+          }
+        );
+
+        var token = jwt.sign({}, privateKey, {
+          algorithm: "RS256",
+          expiresIn: process.env.JWT_EXPIRES,
+          subject: userID.toString(), // need to be string type
+        });
 
         return {
           msg: SUCCESS_MSG.loginSuccessText,
-
           id: userID,
-          // idToken: token,
-          // expiresIn: process.env.EXPIRATION_TIME,
+          idToken: token,
+          expiresIn: process.env.JWT_EXPIRES,
         };
       } else {
         return { msg: ERROR_MSG.passwordText };

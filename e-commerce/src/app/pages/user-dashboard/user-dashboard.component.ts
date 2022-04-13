@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { MenuItem } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
+import { UserService } from 'src/app/service/user/user.service';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -16,7 +17,8 @@ export class UserDashboardComponent implements OnInit {
   items!: MenuItem[];
   constructor(
     public router: Router,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private userService: UserService
   ) {
     this.user_id = parseInt(localStorage.getItem('user_id')!);
   }
@@ -66,7 +68,7 @@ export class UserDashboardComponent implements OnInit {
       acceptLabel: 'Logout',
       rejectLabel: 'Cancel',
       accept: () => {
-        localStorage.removeItem('user_id');
+        this.userService.logout();
         this.router.navigate(['']);
       },
     });
