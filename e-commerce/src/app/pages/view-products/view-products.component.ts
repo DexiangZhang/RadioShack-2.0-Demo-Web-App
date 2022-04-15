@@ -27,7 +27,7 @@ export class ViewProductsComponent implements OnInit {
   orderSummary: boolean = false;
 
   orderDetail: any = {};
-  user_id = localStorage.getItem('user_id');
+
   user: any;
 
   orderStatus = ['Shipped', 'Processing', 'Delivered', 'Transit'];

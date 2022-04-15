@@ -35,7 +35,7 @@ let createNewProduct = async (req, res) => {
   try {
     // generate unique id
     let product_id = nanoid(10);
-    let id = req.params.userID;
+    let id = req.user.sub;
 
     let {
       productImage,

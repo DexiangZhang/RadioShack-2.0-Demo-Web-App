@@ -84,66 +84,35 @@ let validateUser = async (req, res) => {
       if (matchPassword) {
         let userID = rows[0].user_id;
 
-        // works, but not work when add jwt.sign
-        // generateKeyPair(
-        //   "rsa",
-        //   {
-        //     modulusLength: 2048,
-        //     publicKeyEncoding: {
-        //       type: "pkcs1",
-        //       format: "pem",
-        //     },
-        //     privateKeyEncoding: {
-        //       type: "pkcs1",
-        //       format: "pem",
-        //     },
-        //   },
-        //   (err, publicKey, privateKey) => {
-        //     if (err) {
-        //       console.log(err);
-        //     }
-        //     publicKeyValue = publicKey;
-        //     privateKeyValue = privateKey;
-        //   }
-        // );
-
         // generate public and private key for RSA256 algorithm
-        const { privateKey, publicKey } = crypto.generateKeyPairSync("rsa", {
-          modulusLength: 2048,
-          publicKeyEncoding: {
-            type: "pkcs1",
-            format: "pem",
-          },
-          privateKeyEncoding: {
-            type: "pkcs1",
-            format: "pem",
-          },
-        });
+        // const { privateKey, publicKey } = crypto.generateKeyPairSync("rsa", {
+        //   modulusLength: 2048,
+        //   publicKeyEncoding: {
+        //     type: "pkcs1",
+        //     format: "pem",
+        //   },
+        //   privateKeyEncoding: {
+        //     type: "pkcs1",
+        //     format: "pem",
+        //   },
+        // });
 
-        fs.writeFile(
-          "jwt_keys/publicKey.pem",
-          `PUBLIC_KEY=${publicKey}`,
-          (err) => {
-            if (err !== null) {
-              console.log(err);
-            }
-          }
-        );
+        // fs.writeFile("jwt_keys/publicKey.pem", `${publicKey}`, (err) => {
+        //   if (err !== null) {
+        //     console.log(err);
+        //   }
+        // });
 
-        fs.writeFile(
-          "jwt_keys/privateKey.pem",
-          `PRIVATE_KEY=${privateKey}`,
-          (err) => {
-            if (err !== null) {
-              console.log(err);
-            }
-          }
-        );
+        // var token = jwt.sign({}, privateKey, {
+        //   algorithm: "RS256",
+        //   expiresIn: process.env.JWT_EXPIRES,
+        //   subject: userID.toString(), // need to be string type
+        // });
 
-        var token = jwt.sign({}, privateKey, {
-          algorithm: "RS256",
+        // use the default HS256 algorithm
+        let token = jwt.sign({}, process.env.JWT_SECRET, {
           expiresIn: process.env.JWT_EXPIRES,
-          subject: userID.toString(), // need to be string type
+          subject: userID.toString(),
         });
 
         return {
@@ -191,7 +160,8 @@ let resetPassword = async (req, res) => {
 // get the single user information
 let getUserProfile = async (req, res) => {
   try {
-    let id = req.params.userID;
+    // req.user  is the decode token default information from the middleware in app.js
+    let id = req.user.sub;
 
     const data = await pool.query(
       `SELECT * FROM ${TABLE_NAMES.usersDatabase} 
@@ -215,7 +185,7 @@ let updateUserProfile = async (req, res) => {
   try {
     let { email, firstName, lastName, homeAddress, phoneNum } = req.body;
 
-    let id = req.params.userID;
+    let id = req.user.sub;
 
     let data = await pool.query(
       `UPDATE ${TABLE_NAMES.usersDatabase} 
@@ -236,7 +206,7 @@ let updateUserProfile = async (req, res) => {
 // receive all order data from front-end, and create order invoice in database
 let createNewOrder = async (req, res) => {
   try {
-    let id = req.params.userID;
+    let id = req.user.sub;
     let orderNum = nanoid(10);
 
     let {
@@ -299,7 +269,7 @@ let getAllUserOrders = async () => {
 // get the user order history
 let getUserOrders = async (req, res) => {
   try {
-    let id = req.params.userID;
+    let id = req.user.sub;
     const data = await pool.query(
       `SELECT * FROM ${TABLE_NAMES.orderDatabase} WHERE user_id = ${id}`
     );

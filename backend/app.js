@@ -19,6 +19,22 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(cors());
 
+// check each api request if token is valid or not and if valid then check if it is expoired token
+app.use(
+  expressJwt({
+    secret: process.env.JWT_SECRET,
+    algorithms: ["HS256"],
+  }).unless({
+    // only following api will not be checked for token authorization
+    path: [
+      "/api/user/signUp",
+      "/api/user/signIn",
+      "/api/user/resetPassword",
+      "/api/product/fetchAllProducts",
+    ],
+  })
+);
+
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 //common api header
@@ -41,40 +57,39 @@ const createNewProduct = require("./src/routes/createNewProduct");
 const deleteProduct = require("./src/routes/deleteProduct");
 const updateProductInfo = require("./src/routes/updateProductInfo");
 
-// get public key and decode the key for middleware
+// get public key and decode the key for middleware to verify the token for RSA256, but cannot get the public key
+// since it always run first which get the old key, not the one currently create
 
-// TODO: have error to get the key from the file
-const RSA_PUBLIC_KEY = fs.readFile("jwt_keys/publicKey.pem", (err) => {
-  console.log(err);
-});
-const checkIfAuthenticated = expressJwt({
-  secret: RSA_PUBLIC_KEY,
-  algorithms: ["RS256"],
-});
+// const RSA_PUBLIC_KEY = fs.readFileSync("jwt_keys/publicKey.pem", "utf8");
+// const checkIfAuthenticated = expressJwt({
+//   secret: RSA_PUBLIC_KEY,
+//   algorithms: ["RS256"],
+// });
 
 // user api
 app.get(`${userApi}/fetchAllUsers`, getAllUsers);
 app.get(`${userApi}/getAllUserOrders`, getAllUserOrders);
 
-// not testing yet, need to testing
-app.get(
-  `${userApi}/getUserProfile/:userID`,
-  checkIfAuthenticated,
-  getUserProfile
-);
+// change
+app.get(`${userApi}/getUserProfile`, getUserProfile);
+// change
+app.get(`${userApi}/getUserOrders`, getUserOrders);
 
-app.get(`${userApi}/getUserOrders/:userID`, getUserOrders);
 app.get(`${userApi}/getUserOrderProduct/:orderNum`, getUserOrderProdInfo);
 
-app.post(`${userApi}/resetPassword`, resetUserPassword);
-app.post(`${userApi}/signUp`, createNewUser);
-app.post(`${userApi}/signIn`, userLogin);
-app.post(`${userApi}/placeOrder/:userID`, placeUserOrder);
-app.patch(`${userApi}/updateUserProfile/:userID`, updateUserProfile);
+app.post(`${userApi}/resetPassword`, resetUserPassword); // no need to check if authenticated
+app.post(`${userApi}/signUp`, createNewUser); // no need to check if authenticated
+app.post(`${userApi}/signIn`, userLogin); // no need to check if authenticated
+
+// change
+app.post(`${userApi}/placeOrder`, placeUserOrder);
+// change
+app.patch(`${userApi}/updateUserProfile`, updateUserProfile);
 
 // product api
-app.get(`${productApi}/fetchAllProducts`, getAllProducts);
-app.post(`${productApi}/uploadNewProduct/:userID`, createNewProduct);
+app.get(`${productApi}/fetchAllProducts`, getAllProducts); // no need to check if authenticated
+// change
+app.post(`${productApi}/uploadNewProduct`, createNewProduct);
 app.delete(`${productApi}/deleteProduct/:prodID`, deleteProduct);
 app.patch(`${productApi}/updateProductInfo/:prodID`, updateProductInfo);
 

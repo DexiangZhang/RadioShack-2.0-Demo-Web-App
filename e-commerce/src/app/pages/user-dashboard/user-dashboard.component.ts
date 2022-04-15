@@ -12,16 +12,12 @@ import { UserService } from 'src/app/service/user/user.service';
   providers: [ConfirmationService],
 })
 export class UserDashboardComponent implements OnInit {
-  user_id: number = 0;
-
   items!: MenuItem[];
   constructor(
     public router: Router,
     private confirmationService: ConfirmationService,
     private userService: UserService
-  ) {
-    this.user_id = parseInt(localStorage.getItem('user_id')!);
-  }
+  ) {}
 
   ngOnInit(): void {
     // create the naviagtor menu

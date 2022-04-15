@@ -30,8 +30,6 @@ export class ViewProfileComponent implements OnInit {
 
   info!: any;
 
-  id = localStorage.getItem('user_id');
-
   constructor(
     private primengConfig: PrimeNGConfig,
     public userService: UserService,

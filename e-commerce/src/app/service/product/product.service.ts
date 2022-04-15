@@ -12,12 +12,11 @@ export class ProductService {
 
   backend_URL = environment.backendServer;
   backend_port = environment.backendPort;
-  user_id = localStorage.getItem('user_id');
 
   // create new product
   createNewProduct(product: any): Observable<any> {
     return this.http.post(
-      `${this.backend_URL}:${this.backend_port}/api/product/uploadNewProduct/${this.user_id}`,
+      `${this.backend_URL}:${this.backend_port}/api/product/uploadNewProduct`,
       product,
       {
         responseType: 'text',

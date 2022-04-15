@@ -11,7 +11,6 @@ export class ViewTransHistoryComponent implements OnInit {
   orderHistory: any = [];
   orderProductList: any = [];
   viewProductSummary: boolean = false;
-  userID = parseInt(localStorage.getItem('user_id')!);
 
   getUserOrders() {
     this.userService.getUserOrderHistory().subscribe({

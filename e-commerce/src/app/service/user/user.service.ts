@@ -12,7 +12,6 @@ export class UserService {
 
   backend_URL = environment.backendServer;
   backend_port = environment.backendPort;
-  id = localStorage.getItem('user_id');
 
   validateUserLogin(user: any): Observable<any> {
     return this.http.post(
@@ -20,17 +19,6 @@ export class UserService {
       user
     );
   }
-
-  // jwt token session but not setup yet, since jwt is not work in backend
-
-  // private setSession(authResult: any) {
-  //   // get the expireate date that is "authResult.expiresIn" hour from now time
-  //   const expiresAt = new Date(
-  //     Date.now() + authResult.expiresIn.replace(/\D/g, '') * (60 * 60 * 1000)
-  //   ).toLocaleString();
-  //   localStorage.setItem('id_token', authResult.idToken);
-  //   localStorage.setItem('expires_at', expiresAt);
-  // }
 
   logout() {
     localStorage.removeItem('id_token');
@@ -70,14 +58,14 @@ export class UserService {
   // get single user profile information
   getUserProfile(): Observable<any> {
     return this.http.get(
-      `${this.backend_URL}:${this.backend_port}/api/user/getUserProfile/${this.id}`
+      `${this.backend_URL}:${this.backend_port}/api/user/getUserProfile`
     );
   }
 
   // update user profile
   updateUserProfile(user: any): Observable<any> {
     return this.http.patch(
-      `${this.backend_URL}:${this.backend_port}/api/user/updateUserProfile/${this.id}`,
+      `${this.backend_URL}:${this.backend_port}/api/user/updateUserProfile`,
       user,
       {
         responseType: 'text',
@@ -88,7 +76,7 @@ export class UserService {
   // create new order for the user
   createUserOrder(order: any): Observable<any> {
     return this.http.post(
-      `${this.backend_URL}:${this.backend_port}/api/user/placeOrder/${this.id}`,
+      `${this.backend_URL}:${this.backend_port}/api/user/placeOrder`,
       order,
       {
         responseType: 'text',
@@ -106,14 +94,14 @@ export class UserService {
   //get single user order history by user id
   getUserOrderHistory(): Observable<any> {
     return this.http.get(
-      `${this.backend_URL}:${this.backend_port}/api/user/getUserOrders/${this.id}`
+      `${this.backend_URL}:${this.backend_port}/api/user/getUserOrders`
     );
   }
 
   // get single order number's product details
   getUserOrderProducts(order_id: any): Observable<any> {
     return this.http.get(
-      `${this.backend_URL}:${this.backend_port}/api/user/getUserOrderProduct/${order_id}`
+      `${this.backend_URL}:${this.backend_port}/api/user/getUserOrderProduct`
     );
   }
 }
