@@ -1,8 +1,8 @@
 openapi: 3.0.0
 info:
-  title: EletronX API
-  description: EletronX API Documentation by DexiangZhang
-  version: 1.0.0
+  title: RadioShack 2.0 API
+  description: RadioShack 2.0 API Documentation by DexiangZhang
+  version: 1.0.2
 servers:
   - url: http://localhost:8080/api
     description: Local Server
@@ -15,6 +15,8 @@ tags:
 paths:
   /user/fetchAllUsers:
     get:
+      security:
+        - bearerAuth: []
       tags:
         - user
       description: Get all the user from the system
@@ -30,20 +32,14 @@ paths:
               schema:
                 $ref: "#/components/schemas/user"
 
-  /user/getUserProfile/{userID}:
+  /user/getUserProfile:
     get:
+      security:
+        - bearerAuth: []
       tags:
         - user
       description: Get one user profile information by userID
       operationId: getOneUserProfile
-
-      parameters:
-        - in: path
-          name: userID
-          schema:
-            type: integer
-          required: true
-          description: A single user ID
 
       responses:
         200:
@@ -53,20 +49,14 @@ paths:
               schema:
                 $ref: "#/components/schemas/user"
 
-  /user/getUserOrders/{userID}:
+  /user/getUserOrders:
     get:
+      security:
+        - bearerAuth: []
       tags:
         - user
       description: Get the user orders history by userID
       operationId: getSingleUserOrders
-
-      parameters:
-        - in: path
-          name: userID
-          schema:
-            type: integer
-          required: true
-          description: A single user ID
 
       responses:
         200:
@@ -76,8 +66,27 @@ paths:
               schema:
                 $ref: "#/components/schemas/order"
 
+  /user/getUserProducts:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - user
+      description: Get the user products detail
+      operationId: getSingleUserProducts
+
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/product"
+
   /user/getAllUserOrders:
     get:
+      security:
+        - bearerAuth: []
       tags:
         - user
       description: Get all the user order from the system
@@ -95,6 +104,8 @@ paths:
 
   /user/getUserOrderProduct/{orderNum}:
     get:
+      security:
+        - bearerAuth: []
       tags:
         - user
       description: Get the order product details by orderNum
@@ -182,20 +193,14 @@ paths:
         422:
           description: Username is not match! Please check your username!
 
-  /user/placeOrder/{userID}:
+  /user/placeOrder:
     post:
+      security:
+        - bearerAuth: []
       tags:
         - user
       description: Create a new order for this user
       operationId: createNewOrder
-
-      parameters:
-        - in: path
-          name: userID
-          schema:
-            type: integer
-          required: true
-          description: A single user ID
 
       requestBody:
         content:
@@ -208,20 +213,15 @@ paths:
         422:
           description: Order Failed! Sorry, Something wrong with your order, please check your code!
 
-  /user/updateUserProfile/{userID}:
+  /user/updateUserProfile:
     patch:
+      security:
+        - bearerAuth: []
       tags:
         - user
       description: Update user personal information
       operationId: updateUserProfile
 
-      parameters:
-        - in: path
-          name: userID
-          schema:
-            type: integer
-          required: true
-          description: A single user ID
       requestBody:
         content:
           application/json:
@@ -251,20 +251,14 @@ paths:
               schema:
                 $ref: "#/components/schemas/product"
 
-  /product/uploadNewProduct/{userID}:
+  /product/uploadNewProduct:
     post:
+      security:
+        - bearerAuth: []
       tags:
         - product
       description: Upload a new product
       operationId: createNewProduct
-
-      parameters:
-        - in: path
-          name: userID
-          schema:
-            type: integer
-          required: true
-          description: A single user ID
 
       requestBody:
         content:
@@ -279,6 +273,8 @@ paths:
 
   /product/deleteProduct/{productID}:
     delete:
+      security:
+        - bearerAuth: []
       tags:
         - product
       description: Delete user product by productID
@@ -298,6 +294,8 @@ paths:
 
   /product/updateProductInfo/{productID}:
     patch:
+      security:
+        - bearerAuth: []
       tags:
         - product
       description: Update user product by productID
@@ -322,6 +320,12 @@ paths:
           description: Updated product success!
 
 components:
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT # optional, arbitrary value for documentation purposes
+
   schemas:
     user:
       type: object

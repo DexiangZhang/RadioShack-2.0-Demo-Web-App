@@ -117,7 +117,6 @@ let validateUser = async (req, res) => {
 
         return {
           msg: SUCCESS_MSG.loginSuccessText,
-          id: userID,
           idToken: token,
           expiresIn: process.env.JWT_EXPIRES,
         };
@@ -281,6 +280,7 @@ let getUserOrders = async (req, res) => {
   }
 };
 
+// get user order products information
 let getUserOrderDetails = async (req, res) => {
   try {
     let orderNum = req.params.orderNum;
@@ -288,6 +288,20 @@ let getUserOrderDetails = async (req, res) => {
     const data = await pool.query(
       `SELECT * FROM ${TABLE_NAMES.orderProdDatabase} 
       WHERE order_num = '${orderNum}'`
+    );
+
+    return data.rows;
+  } catch (err) {
+    res.send(ERROR_MSG.defaultText);
+  }
+};
+
+// get the exisitng product detail from the database based on userID
+let getUserProducts = async (req, res) => {
+  try {
+    let id = req.user.sub;
+    const data = await pool.query(
+      `SELECT * FROM ${TABLE_NAMES.productDatabase} WHERE user_id = ${id}`
     );
 
     return data.rows;
@@ -307,4 +321,5 @@ module.exports = {
   getUserOrderDetails,
   getAllUserOrders,
   resetPassword,
+  getUserProducts,
 };

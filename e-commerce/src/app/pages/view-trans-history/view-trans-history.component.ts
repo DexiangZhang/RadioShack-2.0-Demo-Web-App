@@ -15,9 +15,6 @@ export class ViewTransHistoryComponent implements OnInit {
   getUserOrders() {
     this.userService.getUserOrderHistory().subscribe({
       next: (data) => {
-        // get correct order without refreshing using getalluserorder() ==> this.orderHistory = data.filter(
-        //   (order: { user_id: number }) => order.user_id === this.userID
-        // );
         this.orderHistory = data;
       },
       error: (error) => console.log(error),
@@ -27,6 +24,7 @@ export class ViewTransHistoryComponent implements OnInit {
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
+    // this.isEmpty =
     this.getUserOrders();
   }
 

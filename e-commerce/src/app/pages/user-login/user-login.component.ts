@@ -62,7 +62,6 @@ export class UserLoginComponent implements OnInit {
 
           localStorage.setItem('id_token', data.idToken);
           localStorage.setItem('expires_at', expiresAt);
-          localStorage.setItem('user_id', data.id);
 
           // pass the url with some value ===> eg. userDashboard/user_1
           this.router.navigate(['userDashboard', userLogin.username]).then(

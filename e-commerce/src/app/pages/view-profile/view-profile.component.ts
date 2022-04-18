@@ -53,10 +53,6 @@ export class ViewProfileComponent implements OnInit {
   getUserProfile() {
     this.userService.getUserProfile().subscribe({
       next: (data) => {
-        // get the correct data without refresh window when use getAllprofile() ===> this.info = data.find(
-        //   (user: { user_id: string | null }) => user.user_id == this.id
-        // );
-
         this.info = data;
 
         this.formRef.patchValue({

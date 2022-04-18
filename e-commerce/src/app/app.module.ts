@@ -18,6 +18,7 @@ import { UserSignUpComponent } from './pages/user-sign-up/user-sign-up.component
 import { UserResetPWComponent } from './pages/user-reset-pw/user-reset-pw.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { TokenService } from './service/token/token.service';
+import { AuthGuard } from './guard/auth.guard';
 
 // style import
 import { InputTextModule } from 'primeng/inputtext';
@@ -102,6 +103,7 @@ import { FieldsetModule } from 'primeng/fieldset';
     FieldsetModule,
   ],
   providers: [
+    AuthGuard,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenService,

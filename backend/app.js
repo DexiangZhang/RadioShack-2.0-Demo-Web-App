@@ -18,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cors());
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 // check each api request if token is valid or not and if valid then check if it is expoired token
 app.use(
@@ -31,11 +32,10 @@ app.use(
       "/api/user/signIn",
       "/api/user/resetPassword",
       "/api/product/fetchAllProducts",
+      "/api-docs",
     ],
   })
 );
-
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 //common api header
 const userApi = "/api/user";
@@ -51,6 +51,7 @@ const getUserOrders = require("./src/routes/getUserOrders");
 const getUserOrderProdInfo = require("./src/routes/getOrderProdInfo");
 const getAllUserOrders = require("./src/routes/getAllUserOrders");
 const resetUserPassword = require("./src/routes/resetUserPassword");
+const getUserProducts = require("./src/routes/getUserProducts");
 
 const getAllProducts = require("./src/routes/getAllProducts");
 const createNewProduct = require("./src/routes/createNewProduct");
@@ -69,26 +70,18 @@ const updateProductInfo = require("./src/routes/updateProductInfo");
 // user api
 app.get(`${userApi}/fetchAllUsers`, getAllUsers);
 app.get(`${userApi}/getAllUserOrders`, getAllUserOrders);
-
-// change
 app.get(`${userApi}/getUserProfile`, getUserProfile);
-// change
 app.get(`${userApi}/getUserOrders`, getUserOrders);
-
 app.get(`${userApi}/getUserOrderProduct/:orderNum`, getUserOrderProdInfo);
-
+app.get(`${userApi}/getUserProducts`, getUserProducts);
 app.post(`${userApi}/resetPassword`, resetUserPassword); // no need to check if authenticated
 app.post(`${userApi}/signUp`, createNewUser); // no need to check if authenticated
 app.post(`${userApi}/signIn`, userLogin); // no need to check if authenticated
-
-// change
 app.post(`${userApi}/placeOrder`, placeUserOrder);
-// change
 app.patch(`${userApi}/updateUserProfile`, updateUserProfile);
 
 // product api
 app.get(`${productApi}/fetchAllProducts`, getAllProducts); // no need to check if authenticated
-// change
 app.post(`${productApi}/uploadNewProduct`, createNewProduct);
 app.delete(`${productApi}/deleteProduct/:prodID`, deleteProduct);
 app.patch(`${productApi}/updateProductInfo/:prodID`, updateProductInfo);

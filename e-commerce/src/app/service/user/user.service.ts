@@ -20,10 +20,16 @@ export class UserService {
     );
   }
 
+  // remove all the localstorage data
   logout() {
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
     localStorage.removeItem('user_id');
+  }
+
+  // authorized if user is logged in or not
+  loggedIn() {
+    return !!localStorage.getItem('id_token');
   }
 
   // create new account
@@ -101,7 +107,14 @@ export class UserService {
   // get single order number's product details
   getUserOrderProducts(order_id: any): Observable<any> {
     return this.http.get(
-      `${this.backend_URL}:${this.backend_port}/api/user/getUserOrderProduct`
+      `${this.backend_URL}:${this.backend_port}/api/user/getUserOrderProduct/${order_id}`
+    );
+  }
+
+  //get the user own products
+  getUserProducts(): Observable<any> {
+    return this.http.get(
+      `${this.backend_URL}:${this.backend_port}/api/user/getUserProducts`
     );
   }
 }
