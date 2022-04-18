@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { MenuItem } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
+import { UserService } from 'src/app/service/user/user.service';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -11,15 +12,12 @@ import { ConfirmationService } from 'primeng/api';
   providers: [ConfirmationService],
 })
 export class UserDashboardComponent implements OnInit {
-  user_id: number = 0;
-
   items!: MenuItem[];
   constructor(
     public router: Router,
-    private confirmationService: ConfirmationService
-  ) {
-    this.user_id = parseInt(localStorage.getItem('user_id')!);
-  }
+    private confirmationService: ConfirmationService,
+    private userService: UserService
+  ) {}
 
   ngOnInit(): void {
     // create the naviagtor menu
@@ -66,7 +64,7 @@ export class UserDashboardComponent implements OnInit {
       acceptLabel: 'Logout',
       rejectLabel: 'Cancel',
       accept: () => {
-        localStorage.removeItem('user_id');
+        this.userService.logout();
         this.router.navigate(['']);
       },
     });

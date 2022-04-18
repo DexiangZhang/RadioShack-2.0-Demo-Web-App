@@ -11,14 +11,10 @@ export class ViewTransHistoryComponent implements OnInit {
   orderHistory: any = [];
   orderProductList: any = [];
   viewProductSummary: boolean = false;
-  userID = parseInt(localStorage.getItem('user_id')!);
 
   getUserOrders() {
     this.userService.getUserOrderHistory().subscribe({
       next: (data) => {
-        // get correct order without refreshing using getalluserorder() ==> this.orderHistory = data.filter(
-        //   (order: { user_id: number }) => order.user_id === this.userID
-        // );
         this.orderHistory = data;
       },
       error: (error) => console.log(error),
@@ -28,6 +24,7 @@ export class ViewTransHistoryComponent implements OnInit {
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
+    // this.isEmpty =
     this.getUserOrders();
   }
 

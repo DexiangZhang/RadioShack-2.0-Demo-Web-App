@@ -8,6 +8,7 @@ import { PrimeNGConfig } from 'primeng/api';
 import { Table, TableService } from 'primeng/table';
 
 import { ProductService } from 'src/app/service/product/product.service';
+import { UserService } from 'src/app/service/user/user.service';
 
 @Component({
   selector: 'app-share-own-products',
@@ -41,10 +42,10 @@ export class ShareOwnProductsComponent implements OnInit {
   productDialog!: boolean;
   productObject!: any;
   isEditMode!: boolean;
-  userID = parseInt(localStorage.getItem('user_id')!);
 
   constructor(
     private productService: ProductService,
+    private userService: UserService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private primengConfig: PrimeNGConfig,
@@ -92,11 +93,9 @@ export class ShareOwnProductsComponent implements OnInit {
 
   // get all product this user has uploaded
   getUserProduct() {
-    this.productService.fetchAllProduct().subscribe({
+    this.userService.getUserProducts().subscribe({
       next: (data) => {
-        this.products = data.filter(
-          (item: { user_id: number }) => item.user_id === this.userID
-        );
+        this.products = data;
       },
       error: (error) => console.log(error),
     });

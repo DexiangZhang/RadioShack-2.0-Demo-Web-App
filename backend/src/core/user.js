@@ -4,6 +4,8 @@ const { Pool, Client } = require("pg");
 const { nanoid } = require("nanoid");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
+const fs = require("fs");
 
 const {
   TABLE_NAMES,
@@ -82,34 +84,41 @@ let validateUser = async (req, res) => {
       if (matchPassword) {
         let userID = rows[0].user_id;
 
-        // generate token
-
-        // error message for console.log
-        //         HttpErrorResponse {headers: HttpHeaders, status: 200, statusText: 'OK', url: 'http://localhost:8080/api/user/signIn', ok: false, …}
-        // error: {error: SyntaxError: Unexpected token S in JSON at position 0 at JSON.parse (<anonymous>) at XMLHtt…, text: 'Sorry, Something wrong with your program, please check your code or try again!'}
-        // headers: HttpHeaders {normalizedNames: Map(0), lazyUpdate: null, lazyInit: ƒ}
-        // message: "Http failure during parsing for http://localhost:8080/api/user/signIn"
-        // name: "HttpErrorResponse"
-        // ok: false
-        // status: 200
-        // statusText: "OK"
-        // url: "http://localhost:8080/api/user/signIn"
-        // [[Prototype]]: HttpResponseBase
-
-        // let token = jwt.sign({}, "something", {
-        //   algorithm: "RS256",
-        //   expiresIn: 120,
-        //   subject: userID,
+        // generate public and private key for RSA256 algorithm
+        // const { privateKey, publicKey } = crypto.generateKeyPairSync("rsa", {
+        //   modulusLength: 2048,
+        //   publicKeyEncoding: {
+        //     type: "pkcs1",
+        //     format: "pem",
+        //   },
+        //   privateKeyEncoding: {
+        //     type: "pkcs1",
+        //     format: "pem",
+        //   },
         // });
 
-        // console.log(token);
+        // fs.writeFile("jwt_keys/publicKey.pem", `${publicKey}`, (err) => {
+        //   if (err !== null) {
+        //     console.log(err);
+        //   }
+        // });
+
+        // var token = jwt.sign({}, privateKey, {
+        //   algorithm: "RS256",
+        //   expiresIn: process.env.JWT_EXPIRES,
+        //   subject: userID.toString(), // need to be string type
+        // });
+
+        // use the default HS256 algorithm
+        let token = jwt.sign({}, process.env.JWT_SECRET, {
+          expiresIn: process.env.JWT_EXPIRES,
+          subject: userID.toString(),
+        });
 
         return {
           msg: SUCCESS_MSG.loginSuccessText,
-
-          id: userID,
-          // idToken: token,
-          // expiresIn: process.env.EXPIRATION_TIME,
+          idToken: token,
+          expiresIn: process.env.JWT_EXPIRES,
         };
       } else {
         return { msg: ERROR_MSG.passwordText };
@@ -150,7 +159,8 @@ let resetPassword = async (req, res) => {
 // get the single user information
 let getUserProfile = async (req, res) => {
   try {
-    let id = req.params.userID;
+    // req.user  is the decode token default information from the middleware in app.js
+    let id = req.user.sub;
 
     const data = await pool.query(
       `SELECT * FROM ${TABLE_NAMES.usersDatabase} 
@@ -174,7 +184,7 @@ let updateUserProfile = async (req, res) => {
   try {
     let { email, firstName, lastName, homeAddress, phoneNum } = req.body;
 
-    let id = req.params.userID;
+    let id = req.user.sub;
 
     let data = await pool.query(
       `UPDATE ${TABLE_NAMES.usersDatabase} 
@@ -195,7 +205,7 @@ let updateUserProfile = async (req, res) => {
 // receive all order data from front-end, and create order invoice in database
 let createNewOrder = async (req, res) => {
   try {
-    let id = req.params.userID;
+    let id = req.user.sub;
     let orderNum = nanoid(10);
 
     let {
@@ -258,7 +268,7 @@ let getAllUserOrders = async () => {
 // get the user order history
 let getUserOrders = async (req, res) => {
   try {
-    let id = req.params.userID;
+    let id = req.user.sub;
     const data = await pool.query(
       `SELECT * FROM ${TABLE_NAMES.orderDatabase} WHERE user_id = ${id}`
     );
@@ -270,6 +280,7 @@ let getUserOrders = async (req, res) => {
   }
 };
 
+// get user order products information
 let getUserOrderDetails = async (req, res) => {
   try {
     let orderNum = req.params.orderNum;
@@ -277,6 +288,20 @@ let getUserOrderDetails = async (req, res) => {
     const data = await pool.query(
       `SELECT * FROM ${TABLE_NAMES.orderProdDatabase} 
       WHERE order_num = '${orderNum}'`
+    );
+
+    return data.rows;
+  } catch (err) {
+    res.send(ERROR_MSG.defaultText);
+  }
+};
+
+// get the exisitng product detail from the database based on userID
+let getUserProducts = async (req, res) => {
+  try {
+    let id = req.user.sub;
+    const data = await pool.query(
+      `SELECT * FROM ${TABLE_NAMES.productDatabase} WHERE user_id = ${id}`
     );
 
     return data.rows;
@@ -296,4 +321,5 @@ module.exports = {
   getUserOrderDetails,
   getAllUserOrders,
   resetPassword,
+  getUserProducts,
 };

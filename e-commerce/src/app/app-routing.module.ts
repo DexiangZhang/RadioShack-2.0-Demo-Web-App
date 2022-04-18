@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './guard/auth.guard';
 import { CallToActionComponent } from './pages/call-to-action/call-to-action.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { ShareOwnProductsComponent } from './pages/share-own-products/share-own-products.component';
@@ -23,9 +24,21 @@ const routes: Routes = [
     children: [
       { path: '', component: CallToActionComponent },
       { path: 'market', component: ViewProductsComponent },
-      { path: 'product', component: ShareOwnProductsComponent },
-      { path: 'transaction', component: ViewTransHistoryComponent },
-      { path: 'profile', component: ViewProfileComponent },
+      {
+        path: 'product',
+        component: ShareOwnProductsComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'transaction',
+        component: ViewTransHistoryComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'profile',
+        component: ViewProfileComponent,
+        canActivate: [AuthGuard],
+      },
       { path: '**', component: CallToActionComponent },
     ],
   },

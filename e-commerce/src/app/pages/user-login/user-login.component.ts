@@ -54,8 +54,14 @@ export class UserLoginComponent implements OnInit {
           } else {
             localStorage.removeItem('rememberUsername');
           }
-          localStorage.setItem('user_id', data.id);
-          // localStorage.setItem('id_token', data.idToken);
+
+          // 1 hour from now to expire the token
+          const expiresAt = new Date(
+            Date.now() + data.expiresIn.replace(/\D/g, '') * (60 * 60 * 1000)
+          ).toLocaleString();
+
+          localStorage.setItem('id_token', data.idToken);
+          localStorage.setItem('expires_at', expiresAt);
 
           // pass the url with some value ===> eg. userDashboard/user_1
           this.router.navigate(['userDashboard', userLogin.username]).then(
