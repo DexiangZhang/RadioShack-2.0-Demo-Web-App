@@ -1,11 +1,9 @@
 require("dotenv").config();
 
-const { Pool, Client } = require("pg");
+const { Pool } = require("pg");
 const { nanoid } = require("nanoid");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
-const fs = require("fs");
 
 const {
   TABLE_NAMES,
@@ -84,31 +82,7 @@ let validateUser = async (req, res) => {
       if (matchPassword) {
         let userID = rows[0].user_id;
 
-        // generate public and private key for RSA256 algorithm
-        // const { privateKey, publicKey } = crypto.generateKeyPairSync("rsa", {
-        //   modulusLength: 2048,
-        //   publicKeyEncoding: {
-        //     type: "pkcs1",
-        //     format: "pem",
-        //   },
-        //   privateKeyEncoding: {
-        //     type: "pkcs1",
-        //     format: "pem",
-        //   },
-        // });
-
-        // fs.writeFile("jwt_keys/publicKey.pem", `${publicKey}`, (err) => {
-        //   if (err !== null) {
-        //     console.log(err);
-        //   }
-        // });
-
-        // var token = jwt.sign({}, privateKey, {
-        //   algorithm: "RS256",
-        //   expiresIn: process.env.JWT_EXPIRES,
-        //   subject: userID.toString(), // need to be string type
-        // });
-
+        // generate token
         // use the default HS256 algorithm
         let token = jwt.sign({}, process.env.JWT_SECRET, {
           expiresIn: process.env.JWT_EXPIRES,
