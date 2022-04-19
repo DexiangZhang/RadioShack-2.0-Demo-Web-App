@@ -11,7 +11,6 @@ const YAML = require("yamljs");
 const swaggerDocument = YAML.load("./swagger_docs/swaggerAPI.yaml");
 
 const expressJwt = require("express-jwt");
-const fs = require("fs");
 
 // middware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -57,15 +56,6 @@ const getAllProducts = require("./src/routes/getAllProducts");
 const createNewProduct = require("./src/routes/createNewProduct");
 const deleteProduct = require("./src/routes/deleteProduct");
 const updateProductInfo = require("./src/routes/updateProductInfo");
-
-// get public key and decode the key for middleware to verify the token for RSA256, but cannot get the public key
-// since it always run first which get the old key, not the one currently create
-
-// const RSA_PUBLIC_KEY = fs.readFileSync("jwt_keys/publicKey.pem", "utf8");
-// const checkIfAuthenticated = expressJwt({
-//   secret: RSA_PUBLIC_KEY,
-//   algorithms: ["RS256"],
-// });
 
 // user api
 app.get(`${userApi}/fetchAllUsers`, getAllUsers);

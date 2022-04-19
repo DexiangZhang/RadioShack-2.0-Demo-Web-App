@@ -56,6 +56,14 @@
     }
   }
 
+  .product-list-item {
+    .product-list-action {
+      button.product-price {
+        font-size: 1.25rem;
+      }
+    }
+  }
+
   .product-grid-item {
     margin: 0.5em;
     border: 1px solid var(--surface-border);
@@ -65,6 +73,10 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+    }
+
+    button.product-price {
+      font-size: 1.25rem;
     }
 
     img {
