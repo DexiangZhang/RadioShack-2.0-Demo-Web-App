@@ -1,4 +1,4 @@
-# E-Commerce-Full-Stack-Site
+# RadioShack 2.0 Demo Web App
 
 ## User Story 
 ---
