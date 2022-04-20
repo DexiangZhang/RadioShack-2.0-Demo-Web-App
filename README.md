@@ -80,5 +80,12 @@
 
 
 
+---
+# How to run the program
+
+1) Install all the dependencies from the package.json file
+2) have docker platform downloaded and run the `docker-compose up` command in the backend folder to setup a PostgreSQL database
+3) run the `app.js` and Angular App
+4) Open the broswer and type `localhost:4200` to view the app
 
 
