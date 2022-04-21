@@ -89,9 +89,16 @@ let validateUser = async (req, res) => {
           subject: userID.toString(),
         });
 
+        // refresh token for the user
+        let refreshToken = jwt.sign({}, process.env.JWT_REFRESH_SECRET, {
+          expiresIn: process.env.JWT_REFRESH_EXPIRES,
+          subject: userID.toString(),
+        });
+
         return {
           msg: SUCCESS_MSG.loginSuccessText,
           idToken: token,
+          refreshToken: refreshToken,
           expiresIn: process.env.JWT_EXPIRES,
         };
       } else {

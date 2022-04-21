@@ -61,6 +61,7 @@ export class UserLoginComponent implements OnInit {
           ).toLocaleString();
 
           localStorage.setItem('id_token', data.idToken);
+          localStorage.setItem('refresh_token', data.refreshToken);
           localStorage.setItem('expires_at', expiresAt);
 
           // pass the url with some value ===> eg. userDashboard/user_1

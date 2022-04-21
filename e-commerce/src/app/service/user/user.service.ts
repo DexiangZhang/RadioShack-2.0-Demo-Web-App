@@ -23,6 +23,7 @@ export class UserService {
   // remove all the localstorage data
   logout() {
     localStorage.removeItem('id_token');
+    localStorage.removeItem('refresh_token');
     localStorage.removeItem('expires_at');
     localStorage.removeItem('user_id');
   }
