@@ -13,11 +13,22 @@ import { UserService } from 'src/app/service/user/user.service';
 })
 export class UserDashboardComponent implements OnInit {
   items!: MenuItem[];
+
+  isLogin!: boolean;
+  username!: any;
+
   constructor(
-    public router: Router,
+    private router: Router,
     private confirmationService: ConfirmationService,
     private userService: UserService
-  ) {}
+  ) {
+    // get localstorage remember name or username
+    this.username =
+      localStorage.getItem('rememberUsername') ||
+      localStorage.getItem('username');
+
+    this.isLogin = this.userService.loggedIn();
+  }
 
   ngOnInit(): void {
     // create the naviagtor menu
@@ -66,7 +77,13 @@ export class UserDashboardComponent implements OnInit {
       accept: () => {
         this.userService.logout();
         this.router.navigate(['']);
+        this.isLogin = false;
       },
     });
+  }
+
+  // navigate to the login page
+  login() {
+    this.router.navigate(['login']);
   }
 }

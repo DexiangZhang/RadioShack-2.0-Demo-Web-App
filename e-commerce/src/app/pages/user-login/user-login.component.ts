@@ -63,12 +63,10 @@ export class UserLoginComponent implements OnInit {
           localStorage.setItem('id_token', data.idToken);
           localStorage.setItem('refresh_token', data.refreshToken);
           localStorage.setItem('expires_at', expiresAt);
+          localStorage.setItem('username', userLogin.username);
 
-          // pass the url with some value ===> eg. userDashboard/user_1
-          this.router.navigate(['userDashboard', userLogin.username]).then(
-            // reload the page, to avoid any bug for wrong user information
-            () => window.location.reload()
-          );
+          // redirect to the user dashboard
+          this.router.navigate(['']);
           this.isError = false;
         } else {
           this.msg = data.msg;

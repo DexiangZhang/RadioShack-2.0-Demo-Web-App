@@ -26,6 +26,7 @@ export class UserService {
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('expires_at');
     localStorage.removeItem('user_id');
+    localStorage.removeItem('username');
   }
 
   // authorized if user is logged in or not

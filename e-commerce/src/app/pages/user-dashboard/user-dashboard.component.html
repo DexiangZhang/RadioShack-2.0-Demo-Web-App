@@ -9,16 +9,32 @@
     <span class="logoName">RadioShack 2.0</span>
   </ng-template>
   <ng-template pTemplate="end">
-    <button
-      pButton
-      pRipple
-      type="button"
-      (click)="logout()"
-      label="Logout"
-      class="p-button-danger p-button-text"
-    >
-      <i class="pi pi-sign-out mx-2"></i>
-    </button>
+    <div *ngIf="!isLogin">
+      <button
+        pButton
+        pRipple
+        type="button"
+        (click)="login()"
+        label="Login"
+        class="p-button-danger p-button-text"
+      >
+        <i class="pi pi-user mx-2"></i>
+      </button>
+    </div>
+
+    <div *ngIf="isLogin">
+      <span>Welcome {{ username }}</span>
+      <button
+        pButton
+        pRipple
+        type="button"
+        (click)="logout()"
+        label="Logout"
+        class="p-button-danger p-button-text"
+      >
+        <i class="pi pi-sign-out mx-2"></i>
+      </button>
+    </div>
   </ng-template>
 </p-menubar>
 
