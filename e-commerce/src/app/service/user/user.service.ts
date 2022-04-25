@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
 
@@ -13,6 +13,24 @@ export class UserService {
   backend_URL = environment.backendServer;
   backend_port = environment.backendPort;
 
+  // the way to communicate parent router and child router (router-outlet) with using BehaviorSubject
+  loginValue = new BehaviorSubject(this.loggedIn());
+  loginValue$ = this.loginValue.asObservable();
+
+  username = new BehaviorSubject(localStorage.getItem('username'));
+  username$ = this.username.asObservable();
+
+  // update login status if user is logged in or not
+  changeLoginValue(status: boolean) {
+    this.loginValue.next(status);
+  }
+
+  // update username
+  changeUsername(username: string) {
+    this.username.next(username);
+  }
+
+  // validate user login
   validateUserLogin(user: any): Observable<any> {
     return this.http.post(
       `${this.backend_URL}:${this.backend_port}/api/user/signIn`,
@@ -25,13 +43,16 @@ export class UserService {
     localStorage.removeItem('id_token');
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('expires_at');
-    localStorage.removeItem('user_id');
     localStorage.removeItem('username');
   }
 
   // authorized if user is logged in or not
   loggedIn() {
-    return !!localStorage.getItem('id_token');
+    let expired_at = localStorage.getItem('expires_at');
+    let current_at = new Date(Date.now()).toLocaleString();
+
+    // only true if the user is logged in and the token is not expired
+    return !!localStorage.getItem('id_token') && expired_at! > current_at;
   }
 
   // create new account

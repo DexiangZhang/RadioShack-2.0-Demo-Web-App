@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 
-//when we make any HTTP request, the user’s token will be attached automatically.
+//when we make any HTTP request, the user’s token will be attached automatically for the api that we require authorization.
 export class TokenService implements HttpInterceptor {
   constructor(private router: Router) {}
 

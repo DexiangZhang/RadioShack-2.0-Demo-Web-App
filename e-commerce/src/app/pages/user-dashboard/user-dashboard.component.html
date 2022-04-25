@@ -8,6 +8,7 @@
 
     <span class="logoName">RadioShack 2.0</span>
   </ng-template>
+
   <ng-template pTemplate="end">
     <div *ngIf="!isLogin">
       <button
@@ -16,14 +17,14 @@
         type="button"
         (click)="login()"
         label="Login"
-        class="p-button-danger p-button-text"
+        class="p-button-success p-button-text"
       >
         <i class="pi pi-user mx-2"></i>
       </button>
     </div>
 
     <div *ngIf="isLogin">
-      <span>Welcome {{ username }}</span>
+      <div class="my-1">Welcome {{ username }}</div>
       <button
         pButton
         pRipple

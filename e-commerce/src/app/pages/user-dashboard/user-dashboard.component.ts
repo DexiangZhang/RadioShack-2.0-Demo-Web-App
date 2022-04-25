@@ -22,12 +22,11 @@ export class UserDashboardComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private userService: UserService
   ) {
-    // get localstorage remember name or username
-    this.username =
-      localStorage.getItem('rememberUsername') ||
-      localStorage.getItem('username');
-
-    this.isLogin = this.userService.loggedIn();
+    // get localstorage username and login status to display in the header
+    // to get correct data even if the broswer is refreshed and change the value when
+    // the child component is change the values
+    this.userService.loginValue$.subscribe((status) => (this.isLogin = status));
+    this.userService.username$.subscribe((name) => (this.username = name));
   }
 
   ngOnInit(): void {
