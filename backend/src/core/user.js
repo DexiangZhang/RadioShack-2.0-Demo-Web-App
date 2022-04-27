@@ -60,6 +60,34 @@ let insertNewUser = async (req, res) => {
   }
 };
 
+let refreshToken = async (req, res) => {
+  const refreshToken = req.body.token;
+
+  // token not provided
+  if (!refreshToken) {
+    res.send("Token not found");
+  }
+
+  try {
+    const { sub } = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
+
+    // generate new token
+    const token = jwt.sign({}, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_EXPIRES,
+      subject: sub,
+    });
+
+    return {
+      msg: "New Token Generated",
+      idToken: token,
+      refreshToken: refreshToken,
+      expiresIn: process.env.JWT_EXPIRES,
+    };
+  } catch (err) {
+    res.send("Invalid token");
+  }
+};
+
 // validate the user password and username when login
 let validateUser = async (req, res) => {
   try {
@@ -89,9 +117,16 @@ let validateUser = async (req, res) => {
           subject: userID.toString(),
         });
 
+        // refresh token for the user
+        let refreshToken = jwt.sign({}, process.env.JWT_REFRESH_SECRET, {
+          expiresIn: process.env.JWT_REFRESH_EXPIRES,
+          subject: userID.toString(),
+        });
+
         return {
           msg: SUCCESS_MSG.loginSuccessText,
           idToken: token,
+          refreshToken: refreshToken,
           expiresIn: process.env.JWT_EXPIRES,
         };
       } else {
@@ -296,4 +331,5 @@ module.exports = {
   getAllUserOrders,
   resetPassword,
   getUserProducts,
+  refreshToken,
 };

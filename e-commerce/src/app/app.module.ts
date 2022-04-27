@@ -19,6 +19,7 @@ import { UserResetPWComponent } from './pages/user-reset-pw/user-reset-pw.compon
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { TokenService } from './service/token/token.service';
 import { AuthGuard } from './guard/auth.guard';
+import { ErrorService } from './service/token/error.service';
 
 // style import
 import { InputTextModule } from 'primeng/inputtext';
@@ -109,6 +110,7 @@ import { FieldsetModule } from 'primeng/fieldset';
       useClass: TokenService,
       multi: true,
     },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorService, multi: true },
   ],
   bootstrap: [AppComponent],
 })

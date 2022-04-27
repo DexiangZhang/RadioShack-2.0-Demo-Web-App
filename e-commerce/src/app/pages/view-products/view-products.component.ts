@@ -71,7 +71,6 @@ export class ViewProductsComponent implements OnInit {
   getCustomerInfo() {
     this.userService.getUserProfile().subscribe({
       next: (data) => {
-        // get correct without reload:  this.user = data.find((user: any) => user.user_id == this.user_id);
         this.user = data;
       },
       error: (error) => console.log(error),

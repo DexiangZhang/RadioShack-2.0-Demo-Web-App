@@ -30,7 +30,7 @@ app.use(
       "/api/user/signUp",
       "/api/user/signIn",
       "/api/user/resetPassword",
-      "/api/product/fetchAllProducts",
+      "/api/user/refreshToken",
       "/api-docs",
     ],
   })
@@ -51,6 +51,7 @@ const getUserOrderProdInfo = require("./src/routes/getOrderProdInfo");
 const getAllUserOrders = require("./src/routes/getAllUserOrders");
 const resetUserPassword = require("./src/routes/resetUserPassword");
 const getUserProducts = require("./src/routes/getUserProducts");
+const refreshToken = require("./src/routes/getNewAccessToken");
 
 const getAllProducts = require("./src/routes/getAllProducts");
 const createNewProduct = require("./src/routes/createNewProduct");
@@ -64,6 +65,7 @@ app.get(`${userApi}/getUserProfile`, getUserProfile);
 app.get(`${userApi}/getUserOrders`, getUserOrders);
 app.get(`${userApi}/getUserOrderProduct/:orderNum`, getUserOrderProdInfo);
 app.get(`${userApi}/getUserProducts`, getUserProducts);
+app.post(`${userApi}/refreshToken`, refreshToken);
 app.post(`${userApi}/resetPassword`, resetUserPassword); // no need to check if authenticated
 app.post(`${userApi}/signUp`, createNewUser); // no need to check if authenticated
 app.post(`${userApi}/signIn`, userLogin); // no need to check if authenticated

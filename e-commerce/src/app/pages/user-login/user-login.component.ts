@@ -20,6 +20,7 @@ export class UserLoginComponent implements OnInit {
 
   msg: string = '';
   isError: boolean = false;
+  isLogin!: boolean;
 
   constructor(
     private primengConfig: PrimeNGConfig,
@@ -38,6 +39,8 @@ export class UserLoginComponent implements OnInit {
     }
 
     this.primengConfig.ripple = true;
+
+    this.userService.loginValue$.subscribe((res) => (this.isLogin = res));
   }
 
   //login user after vertifying the credentials of the user
@@ -55,19 +58,22 @@ export class UserLoginComponent implements OnInit {
             localStorage.removeItem('rememberUsername');
           }
 
+          //(s * 1000) for minutes
+          // (h * 60 * 60 * 1000) for hours
           // 1 hour from now to expire the token
           const expiresAt = new Date(
             Date.now() + data.expiresIn.replace(/\D/g, '') * (60 * 60 * 1000)
           ).toLocaleString();
 
           localStorage.setItem('id_token', data.idToken);
+          localStorage.setItem('refresh_token', data.refreshToken);
           localStorage.setItem('expires_at', expiresAt);
+          localStorage.setItem('username', userLogin.username);
 
-          // pass the url with some value ===> eg. userDashboard/user_1
-          this.router.navigate(['userDashboard', userLogin.username]).then(
-            // reload the page, to avoid any bug for wrong user information
-            () => window.location.reload()
-          );
+          // redirect to the user dashboard and change the login status and update username
+          this.userService.changeLoginValue(true); //invoke new Data
+          this.userService.changeUsername(userLogin.username); //invoke new Data
+          this.router.navigate(['']);
           this.isError = false;
         } else {
           this.msg = data.msg;

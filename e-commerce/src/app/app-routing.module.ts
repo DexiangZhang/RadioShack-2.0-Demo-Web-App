@@ -14,16 +14,19 @@ import { ViewProfileComponent } from './pages/view-profile/view-profile.componen
 import { ViewTransHistoryComponent } from './pages/view-trans-history/view-trans-history.component';
 
 const routes: Routes = [
-  { path: '', component: UserLoginComponent },
-  { path: 'newUser', component: UserSignUpComponent },
-  { path: 'resetPassword', component: UserResetPWComponent },
-
   {
-    path: 'userDashboard/:username',
+    path: '',
     component: UserDashboardComponent,
     children: [
       { path: '', component: CallToActionComponent },
-      { path: 'market', component: ViewProductsComponent },
+      { path: 'login', component: UserLoginComponent },
+      { path: 'signUp', component: UserSignUpComponent },
+      { path: 'resetPassword', component: UserResetPWComponent },
+      {
+        path: 'market',
+        component: ViewProductsComponent,
+        canActivate: [AuthGuard],
+      },
       {
         path: 'product',
         component: ShareOwnProductsComponent,
@@ -39,10 +42,9 @@ const routes: Routes = [
         component: ViewProfileComponent,
         canActivate: [AuthGuard],
       },
-      { path: '**', component: CallToActionComponent },
+      { path: '**', component: NotFoundComponent },
     ],
   },
-  { path: '**', component: NotFoundComponent },
 ];
 
 @NgModule({

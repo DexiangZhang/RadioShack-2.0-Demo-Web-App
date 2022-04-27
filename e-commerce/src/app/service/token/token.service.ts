@@ -1,4 +1,8 @@
-import { HttpInterceptor } from '@angular/common/http';
+import {
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -6,11 +10,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 
-//when we make any HTTP request, the user’s token will be attached automatically.
+//when we make any HTTP request, the user’s token will be attached automatically for the api that we require authorization.
 export class TokenService implements HttpInterceptor {
   constructor() {}
 
-  intercept(req: any, next: any): Observable<any> {
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<any> {
     const token = localStorage.getItem('id_token');
 
     if (token) {

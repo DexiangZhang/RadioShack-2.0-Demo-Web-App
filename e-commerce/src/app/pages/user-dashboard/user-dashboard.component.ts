@@ -13,11 +13,21 @@ import { UserService } from 'src/app/service/user/user.service';
 })
 export class UserDashboardComponent implements OnInit {
   items!: MenuItem[];
+
+  isLogin!: boolean;
+  username!: any;
+
   constructor(
-    public router: Router,
+    private router: Router,
     private confirmationService: ConfirmationService,
     private userService: UserService
-  ) {}
+  ) {
+    // get localstorage username and login status to display in the header
+    // to get correct data even if the broswer is refreshed and change the value when
+    // the child component is change the values
+    this.userService.loginValue$.subscribe((status) => (this.isLogin = status));
+    this.userService.username$.subscribe((name) => (this.username = name));
+  }
 
   ngOnInit(): void {
     // create the naviagtor menu
@@ -66,7 +76,13 @@ export class UserDashboardComponent implements OnInit {
       accept: () => {
         this.userService.logout();
         this.router.navigate(['']);
+        this.isLogin = false;
       },
     });
+  }
+
+  // navigate to the login page
+  login() {
+    this.router.navigate(['login']);
   }
 }
