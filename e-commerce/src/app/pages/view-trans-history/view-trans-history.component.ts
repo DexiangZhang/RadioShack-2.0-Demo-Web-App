@@ -24,7 +24,6 @@ export class ViewTransHistoryComponent implements OnInit {
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    // this.isEmpty =
     this.getUserOrders();
   }
 

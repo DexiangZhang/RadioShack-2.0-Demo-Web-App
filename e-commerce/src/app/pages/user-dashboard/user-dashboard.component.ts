@@ -17,8 +17,6 @@ export class UserDashboardComponent implements OnInit {
   isLogin!: boolean;
   username!: any;
 
-  tokenComfirmation!: any;
-
   constructor(
     private router: Router,
     private confirmationService: ConfirmationService,
@@ -29,10 +27,6 @@ export class UserDashboardComponent implements OnInit {
     // the child component is change the values
     this.userService.loginValue$.subscribe((status) => (this.isLogin = status));
     this.userService.username$.subscribe((name) => (this.username = name));
-
-    // this.userService.tokenTimer$.subscribe(
-    //   (token) => (this.tokenComfirmation = token)
-    // );
   }
 
   ngOnInit(): void {
@@ -91,33 +85,4 @@ export class UserDashboardComponent implements OnInit {
   login() {
     this.router.navigate(['login']);
   }
-
-  // need to show the popup when user login, and the popup will show  after certain time
-  // refreshTokenConfirmation() {
-  //   if (this.tokenComfirmation) {
-  //     setTimeout(() => {
-  //       // this.confirmationService.confirm({
-  //       //   message: `Your Access Token is going to expire at ${localStorage.getItem(
-  //       //     'expires_at'
-  //       //   )}. Do you want to refresh token?`,
-  //       //   header: 'Warning',
-  //       //   icon: 'pi pi-exclamation-circle',
-  //       //   acceptLabel: 'Keep Login',
-  //       //   rejectLabel: 'Cancel',
-  //       //   accept: () => {
-  //       //     // this.userService.logout();
-  //       //     // this.router.navigate(['']);
-  //       //     // this.isLogin = false;
-  //       //     console.log('youre pressed yes');
-  //       //   },
-  //       //   reject: () => {
-  //       //     this.tokenComfirmation = false;
-  //       //   },
-  //       // });
-
-  //       console.log('refresh token confirmation');
-  //       this.tokenComfirmation = false;
-  //     }, 5000);
-  //   }
-  // }
 }

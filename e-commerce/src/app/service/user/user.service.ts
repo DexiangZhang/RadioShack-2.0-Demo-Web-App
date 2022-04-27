@@ -20,9 +20,6 @@ export class UserService {
   username = new BehaviorSubject(localStorage.getItem('username'));
   username$ = this.username.asObservable();
 
-  // tokenTimer = new BehaviorSubject(false);
-  // tokenTimer$ = this.tokenTimer.asObservable();
-
   // update login status if user is logged in or not
   changeLoginValue(status: boolean) {
     this.loginValue.next(status);
@@ -32,11 +29,6 @@ export class UserService {
   changeUsername(username: string) {
     this.username.next(username);
   }
-
-  // update token timer
-  // changeTokenTimer(status: boolean) {
-  //   this.tokenTimer.next(status);
-  // }
 
   // refresh token
   refreshAccessToken() {

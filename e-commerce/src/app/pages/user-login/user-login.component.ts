@@ -62,7 +62,7 @@ export class UserLoginComponent implements OnInit {
           // (h * 60 * 60 * 1000) for hours
           // 1 hour from now to expire the token
           const expiresAt = new Date(
-            Date.now() + data.expiresIn.replace(/\D/g, '') * 1000
+            Date.now() + data.expiresIn.replace(/\D/g, '') * (60 * 60 * 1000)
           ).toLocaleString();
 
           localStorage.setItem('id_token', data.idToken);
@@ -73,7 +73,6 @@ export class UserLoginComponent implements OnInit {
           // redirect to the user dashboard and change the login status and update username
           this.userService.changeLoginValue(true); //invoke new Data
           this.userService.changeUsername(userLogin.username); //invoke new Data
-          // this.userService.changeTokenTimer(true); //invoke new Data
           this.router.navigate(['']);
           this.isError = false;
         } else {
