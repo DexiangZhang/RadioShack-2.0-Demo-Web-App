@@ -76,6 +76,7 @@
 - [x] subtask:  encrypt the user password when stored in the database and decrypt the user password when verifying user password
 - [x] subtask: when the user logout, userID is gone and no one can view that user information except when the authorized user login to his account again
 - [x] subtask: create the JWT token for the front-end and back-end to have a better security system when accessing user information
+- [x] subtasK: refresh the JWT token when access token is expired, and auto logout the user when the refresh token and access token both expired
 ---
 
 
