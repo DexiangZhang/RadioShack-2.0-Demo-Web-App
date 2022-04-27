@@ -20,6 +20,9 @@ export class UserService {
   username = new BehaviorSubject(localStorage.getItem('username'));
   username$ = this.username.asObservable();
 
+  // tokenTimer = new BehaviorSubject(false);
+  // tokenTimer$ = this.tokenTimer.asObservable();
+
   // update login status if user is logged in or not
   changeLoginValue(status: boolean) {
     this.loginValue.next(status);
@@ -28,6 +31,19 @@ export class UserService {
   // update username
   changeUsername(username: string) {
     this.username.next(username);
+  }
+
+  // update token timer
+  // changeTokenTimer(status: boolean) {
+  //   this.tokenTimer.next(status);
+  // }
+
+  // refresh token
+  refreshAccessToken() {
+    return this.http.post(
+      `${this.backend_URL}:${this.backend_port}/api/user/refreshToken`,
+      { token: localStorage.getItem('refresh_token') }
+    );
   }
 
   // validate user login
@@ -48,11 +64,7 @@ export class UserService {
 
   // authorized if user is logged in or not
   loggedIn() {
-    let expired_at = localStorage.getItem('expires_at');
-    let current_at = new Date(Date.now()).toLocaleString();
-
-    // only true if the user is logged in and the token is not expired
-    return !!localStorage.getItem('id_token') && expired_at! > current_at;
+    return !!localStorage.getItem('id_token');
   }
 
   // create new account

@@ -22,7 +22,11 @@ const routes: Routes = [
       { path: 'login', component: UserLoginComponent },
       { path: 'signUp', component: UserSignUpComponent },
       { path: 'resetPassword', component: UserResetPWComponent },
-      { path: 'market', component: ViewProductsComponent },
+      {
+        path: 'market',
+        component: ViewProductsComponent,
+        canActivate: [AuthGuard],
+      },
       {
         path: 'product',
         component: ShareOwnProductsComponent,

@@ -12,10 +12,6 @@ export class AuthGuard implements CanActivate {
     if (this.userService.loggedIn()) {
       return true;
     } else {
-      this.userService.logout();
-      this.userService.changeLoginValue(false);
-      this.router.navigate(['/']);
-      console.log('Not Authorized User or Acess Token Expired! Please Login!');
       return false;
     }
   }

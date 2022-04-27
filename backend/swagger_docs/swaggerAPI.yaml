@@ -146,6 +146,30 @@ paths:
         422:
           description: Username, email or phone number already existed! Please try again!
 
+  /user/refreshToken:
+    post:
+      tags:
+        - user
+      description: Create a new access token from refresh token
+      operationId: createNewAccessToken
+
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  description: refresh token
+                  example: xxxxxx.yyyyyy.zzzzzz
+      responses:
+        201:
+          description: New access token generated
+        422:
+          description: Invalid token
+
   /user/signIn:
     post:
       tags:

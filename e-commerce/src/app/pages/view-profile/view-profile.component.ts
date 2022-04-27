@@ -63,7 +63,7 @@ export class ViewProfileComponent implements OnInit {
           phoneNum: Number(this.info.phone_num),
         });
       }, // success path
-      error: (err) => {
+      error: (err: any) => {
         console.log(err);
       }, // error path
     });
