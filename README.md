@@ -1,5 +1,9 @@
 # RadioShack 2.0 Demo Web App
 
+## Tech Skills
+---
+- Angular, HTML5, CSS3, TypeScript, NodeJS, ExpressJS, JWT Token, Docker, PostgreSQL, Swagger
+
 ## User Story 
 ---
 
